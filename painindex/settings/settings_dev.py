@@ -1,4 +1,5 @@
 from painindex.settings.settings_base import *
+from env import *
 
 
 DEBUG = True
@@ -9,10 +10,8 @@ INSTALLED_APPS += (
 
 )
 
-# Database
-# https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-# DATABASES = {
-# }
+
+
 
 #For development, I don't actually send emails.
 # This makes emails print to the console:

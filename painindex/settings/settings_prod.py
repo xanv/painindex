@@ -1,4 +1,5 @@
 from mysite.settings.settings_base import *
+from env import *
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -8,9 +9,6 @@ INSTALLED_APPS += (
 
 )
 
-# This matches my WebFaction database.
-# DATABASES = {
-# }
 
 # Configure production emails.
 
