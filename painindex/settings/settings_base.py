@@ -92,4 +92,10 @@ USE_TZ = True
 STATIC_URL = '/static/'
 
 # May need to fiddle with this
-STATICFILES_DIRS = os.path.join(BASE_DIR, 'painindex/static/painindex')
+STATICFILES_DIRS = (
+    os.path.join(BASE_DIR, 'painindex/static'),
+)
+
+TEMPLATE_DIRS = (
+    os.path.join(BASE_DIR, 'templates'),
+)
