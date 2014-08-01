@@ -1,7 +1,6 @@
 {# This is a base template file that all other pages inherit from #}
 
 {% load staticfiles %}
-{% load pygmentify %}
 
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
 <html lang="en">
@@ -9,25 +8,16 @@
 <head>
     <title>{% block title %}{% endblock %}</title>
 
-    <link rel="stylesheet" type="text/css" href="{% static 'mysite_app/style.css' %}" />
-    
-    {# Pygmentize custom stylesheet #}
-    <link rel="stylesheet" type="text/css" href="{% static 'mysite_app/pygmentize_xv01.css' %}" />
-    
+    <link rel="stylesheet" type="text/css" href="{% static 'painindex/style.css' %}" />
+
     {# At some point, delete font weights I'm not actually using. In particular there are 2 bold weights here, 600 and 700 #}
     <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700'>
 
-    {# Trying out Gafata. It only has a normal weight. #}
     <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
-    
-    {# Inconsolata for code blocks #}
-    <link href='http://fonts.googleapis.com/css?family=Inconsolata:400,700' rel='stylesheet' type='text/css'>
     
     <script type='text/javascript' 
         src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
         
-    {# favicon #}
-    <link rel="shortcut icon" href="{% static 'mysite_app/images/tile01.ico' %}" />
 
     {% block headstuff %}{% endblock %}
     
@@ -38,80 +28,12 @@
 
     {% block nav %}
     <nav>
-        <!--
-        <h1>Navigate</h1>
-        -->
-        <img id="img_bw" src="{% static 'mysite_app/images/headshot3_bw_small.png' %}" alt="Xan Vongsathorn"/>
-        <img id="img_color" src="{% static 'mysite_app/images/headshot3_color_small.png' %}" alt="Xan Vongsathorn"/>
-        <ul>
-
-            {% comment %} 
-                We check the current url and if it matches a nav bar url, we assign
-                that nav bar anchor the class "current." This enables us to highlight
-                the nav element of the current page.
-            {% endcomment %}
-            
-            {% url 'mysite_app:homepage' as url %}
-            <li id="home-nav"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">HOME</a></li>
-
-            {% url 'mysite_app:write' as url %}            
-            <li class="linkbox_top"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">WRITE</a>
-                <ul>
-                    {% url 'blog:blog-main' as url %}            
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">BLOG</a></li>
-                </ul>
-                <ul>
-                    {% url 'blog:journal-main' as url %}            
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">JOURNAL</a></li>
-                </ul>
-            </li>
-            {% url 'mysite_app:think' as url %}            
-            <li class="linkbox_right"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">THINK</a>
-                <ul>
-                    {% url 'mysite_app:idea-factory-main' as url %}            
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">IDEA FACTORY</a></li>
-                </ul>
-            </li>            
-            {% url 'mysite_app:solve' as url %}            
-            <li class="linkbox_left"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">SOLVE</a>
-                <ul>
-                    {% url 'blog:crosswords' as url %}
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">CROSSWORDS</a></li>
-                </ul>
-            </li>            
-            {% url 'mysite_app:build' as url %}            
-            <li class="linkbox_bottom"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">BUILD</a>
-                <ul>
-                    {% url 'mysite_app:hardware' as url %}
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">HARDWARE</a></li>                
-                    {% url 'mysite_app:software' as url %}
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">SOFTWARE</a></li>
-                </ul>
-            </li>            
-            {% url 'mysite_app:grow' as url %}            
-            <li class="linkbox_center"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">GROW</a>
-                <ul>
-                    {% url 'mysite_app:about-me' as url %}
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">ABOUT ME</a></li>
-                    {% url 'mysite_app:about' as url %}
-                    <li><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">ABOUT SITE</a></li>
-                </ul>
-            </li>
-
-            {% url 'mysite_app:contact' as url %}            
-            <li id="contact-nav"><a {% if request.path == url %} class="current" {% endif %} href="{{ url }}">CONTACT</a></li>
-        
-        </ul>
     </nav>
     {% endblock %}
     
-    {# This gets overridden for the homepage #}
     {% block body_other %}
     
         <div id="top_matter">
-            <a href="{% url 'mysite_app:homepage' %}">
-                <img id="banner" src="{% static 'mysite_app/images/xword_v1-1-1_BANNER_v9.png' %}" alt="Homepage"/>
-            </a>
         </div>
         
         <div id="main_content_box">
@@ -120,15 +42,8 @@
                 <h1>
                     {% block main_content_title %}{% endblock %}        
                 </h1>
-                {% pygment %}
                 {% block main_content %}{% endblock %}
-                {% endpygment %}    
             </div>
-            <!--
-            <div id="main_content_sidebar">
-                {% block main_content_sidebar %}{% endblock %}
-            </div>
-            -->
 
         </div>
     
