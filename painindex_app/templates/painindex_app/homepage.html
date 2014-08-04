@@ -1,26 +1,11 @@
 {% extends "base.html" %}
 
-{% comment %}
-    Even though we are inheriting from base.html which loads staticfiles, 
-    need to do this again in any template that references its own static files
-{% endcomment %}
-{% load staticfiles %}
-
 
 {% block title %}Pain Index{% endblock %}
-
-{% block headstuff %}    
-   <!--
-    <script src="{% static 'painindex/script.js' %}"></script>
--->
-{% endblock %}
 
 
 {% block body_other %}
 <div id="top_matter"> 
-    <div id="top_matter_homepage">    
-        
-    </div>
 
     <p>Welcome to the Pain Index</p>
 </div>
