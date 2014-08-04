@@ -11,6 +11,8 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
+# print BASE_DIR
+# (full path of project_dir/painindex since that's the dir that contains the settings module )
 
 
 # Quick-start development settings - unsuitable for production
@@ -91,9 +93,9 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-# May need to fiddle with this
+
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'painindex/static'),
+    os.path.join(BASE_DIR, 'static'),
 )
 
 TEMPLATE_DIRS = (
