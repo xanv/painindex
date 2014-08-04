@@ -60,10 +60,10 @@ Instructions for getting started:
    This is imported in settings_dev.py and gives Django access to your db.
 8. You may need to make a slight change to your postgres configuration file, pg_hba.conf:
    Near the bottom, you will see the lines:
-
-    \# Database administrative login by Unix domain socket 
-    
+   ```
+    # Database administrative login by Unix domain socket 
     local   all             postgres                                peer
+   ```
 
   Change "peer" to "trust", which should be fine if your postgresql is just being used 
   locally for development.
