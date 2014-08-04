@@ -10,7 +10,7 @@ Instructions for getting started:
 
 3. Install and configure virtualenvwrapper.  This will enable us to create a virtual environment
    for development that's consistent across our machines. First, install:
-    pip install virtualenvwrapper
+    ``pip install virtualenvwrapper``
 
    a) Make a folder for your virtual environments to live in, e.g.:
     mkdir ~/.virtualenvs
