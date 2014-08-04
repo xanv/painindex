@@ -16,26 +16,30 @@ Instructions for getting started:
     mkdir ~/.virtualenvs
     
    b) Add these lines to end of .bashrc (or your OS equivalent):
+   ```
     export WORKON_HOME=~/.virtualenvs           # or the folder you just created
     export PROJECT_HOME=~/Code/Projects/dev     # or wherever you cloned the project to
     source /usr/local/bin/virtualenvwrapper.sh  # or your path to virtualenvwrapper.sh
+    ```
     
    c) Reload .bashrc, e.g. with
-    source .bashrc      # (or close and reopen the terminal)
+    ``source .bashrc``      # (or close and reopen the terminal)
 
 4. Now create a virtualenv, which I assume is called painindex:
-    mkvirtualenv -p python2.7 painindex
+    ``mkvirtualenv painindex``
 
    This environment can be entered/exited with
+   ```
        workon painindex
        deactivate
+   ```
 
 5. Install dependencies into the virtualenv.
    For what follows, make sure you are inside the virtualenv, which already contains
    python2.7 and pip.
    Navigate to the root of the painindex project. The needed packages are found in requirements.txt.
    Hopefully, this will install them in one fell swoop:
-    pip install -r requirements.txt
+    ``pip install -r requirements.txt``
 
   If you run into hangups, install the offending packages another way.
   Make sure to get the specified version.
@@ -74,9 +78,9 @@ At this point, we are done with the one-time setup.
 
 Now and in the future, when you update your local repo, you should run
 any migrations with 
-  python manage.py migrate
+  ``python manage.py migrate``
 
 That's it.  You should be able to launch the server by navigating
 to the project directory (the dir with manage.py inside) and executing:
-  python manage.py runserver
+  ``python manage.py runserver``
 If you visit localhost:8000, you should see the site!
