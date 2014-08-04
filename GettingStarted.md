@@ -43,24 +43,26 @@ Instructions for getting started:
 6. Next, create your postgres database for development. Mine is named painindex, with host postgres.
 
 7. Create a file in painindex/settings called env.py.  To it add the credentials for the db:
-```
-DATABASES = {
-   'default': {
-      'ENGINE': 'django.db.backends.postgresql_psycopg2',
-      'NAME': 'painindex',
-      'USER': 'postgres',
-      'PASSWORD': '<password for your db>',
-      'HOST': '',
-      'PORT': '5432',
-  }
-}
-```
+   ```
+   DATABASES = {
+      'default': {
+         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+         'NAME': 'painindex',
+         'USER': 'postgres',
+         'PASSWORD': '<password for your db>',
+         'HOST': '',
+         'PORT': '5432',
+     }
+   }
+   ```
 
 
    This is imported in settings_dev.py and gives Django access to your db.
 8. You may need to make a slight change to your postgres configuration file, pg_hba.conf:
    Near the bottom, you will see the lines:
-    # Database administrative login by Unix domain socket 
+
+    \# Database administrative login by Unix domain socket 
+    
     local   all             postgres                                peer
 
   Change "peer" to "trust", which should be fine if your postgresql is just being used 
