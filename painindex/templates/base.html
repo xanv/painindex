@@ -7,16 +7,20 @@
 
 <head>
     <title>{% block title %}{% endblock %}</title>
-
-    <link rel="stylesheet" type="text/css" href="{% static 'painindex/style.css' %}" />
-
-    {# At some point, delete font weights I'm not actually using. In particular there are 2 bold weights here, 600 and 700 #}
-    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700'>
-
-    <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
     
     <script type='text/javascript' 
         src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'painindex/bootstrap-3.2.0-dist/css/bootstrap.min.css'%}">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static 'painindex/bootstrap-3.2.0-dist/css/bootstrap-theme.min.css'%}">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="{% static 'painindex/bootstrap-3.2.0-dist/js/bootstrap.min.js'%}"></script>
+
+    <link rel="stylesheet" type="text/css" href="{% static 'painindex/style.css' %}" />
         
 
     {% block headstuff %}{% endblock %}
