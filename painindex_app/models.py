@@ -1,4 +1,5 @@
 from django.db import models
+from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 
@@ -40,17 +41,18 @@ class PainReport(models.Model):
 
     pain_source = models.ForeignKey(PainSource)
     intensity = models.IntegerField(choices=SCALE_CHOICES)
-    pain_profile = models.ForeignKey('PainProfile', null=True, blank=True)
+    profile = models.ForeignKey('PainReportProfile', null=True, blank=True)
 
     def __unicode__(self):
         return "PainReport %d: %s" % (self.pk, self.pain_source.name)
 
-class PainProfile(models.Model):
+class PainReportProfile(models.Model):
     """ A bundle of all PainReports from a single entity.
-        If all contributors were Users, we could just idenfity PainReports
-        with each User account. But we also want to group together
-        all PainReports from a single session of an anonymous non-signed-in user.
+        Each profile either belongs to a User or corresponds to a session
+        of an anonymous user.
     """
+
+    user = models.OneToOneField(User)
     
     def __unicode__(self):
-        return "PainProfile %d" % self.pk 
+        return "PainReportProfile %d" % self.pk
