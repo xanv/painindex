@@ -10,6 +10,7 @@ coming soon
 coming soon
 
 ### dependencies
+ruby, rvm, rubygems, graphviz
 coming soon
 
 ### set up the database

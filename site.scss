@@ -1,0 +1,7 @@
+$content_width: 500px;
+$background: #FFFFFF;
+
+.content {
+  background-color: darken($background, 3%);
+  width: $content_width;
+}
