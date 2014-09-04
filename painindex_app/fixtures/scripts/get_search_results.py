@@ -2,6 +2,7 @@
 
 import urllib2, cookielib
 from bs4 import BeautifulSoup
+import json
 from time import sleep
 from random import uniform
 
@@ -18,7 +19,7 @@ def get_search_results(num_results=20, sleep_time=1, testing=False):
     """
 
     search_results = {}
-    pains = get_pains('../data/schmidt_ratings1.txt')
+    pains = get_pains('../data/inputs/schmidt_ratings1.txt')
     url_head = 'https://www.google.com/search?num=' + str(num_results) + '&q='
 
     if testing == True: 
@@ -85,4 +86,8 @@ if __name__ == '__main__':
 
     search_results = get_search_results() #get_search_results(testing=True)
 
-    print search_results
+    # print search_results
+
+    with open('../data/outputs/search_results.txt', 'w') as outfile:
+        json.dump(search_results, outfile)
+
