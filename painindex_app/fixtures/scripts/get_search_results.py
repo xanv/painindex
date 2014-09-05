@@ -72,12 +72,18 @@ def get_soup(url):
     req = urllib2.Request(url, headers=header)
 
     try:
-        page = urllib2.urlopen(req)
+        page = urllib2.urlopen(req, timeout=10)
         # print page.read()
         return BeautifulSoup(page)
     except urllib2.HTTPError, e:
+        print 'HTTPError, no soup for you!'
         print e.fp.read()
         return None
+    except urllib2.URLError, e:
+        print 'Bad url or timeout, no soup for you!'
+        print e.fp.read()
+        return None
+
 
 
 
