@@ -3,12 +3,13 @@
 import urllib2, cookielib
 from bs4 import BeautifulSoup
 import json
+import socket
 from time import sleep
 from random import uniform
 
  
 
-def get_search_results(num_results=20, sleep_time=1, testing=False):
+def get_search_results(num_results=100, sleep_time=1, testing=False):
     """Return a dictionary with key: pain name (e.g. 'yellow jacket'),
         val[0]: google search url
         val[1]: list of [link text, url] for each search result on page.
@@ -20,7 +21,9 @@ def get_search_results(num_results=20, sleep_time=1, testing=False):
 
     search_results = {}
     pains = get_pains('../data/inputs/schmidt_ratings1.txt')
-    url_head = 'https://www.google.com/search?num=' + str(num_results) + '&q='
+    url_head = ('https://www.google.com/search?num=' 
+        + str(num_results) + '&q=bug+sting+'
+    )
 
     if testing == True: 
         num_pains = 1
@@ -75,14 +78,19 @@ def get_soup(url):
         page = urllib2.urlopen(req, timeout=10)
         # print page.read()
         return BeautifulSoup(page)
-    except urllib2.HTTPError, e:
-        print 'HTTPError, no soup for you!'
-        print e.fp.read()
+    except:
+        # If we have ANY error retrieving the page, move on.
+        print "No soup for you!"
         return None
-    except urllib2.URLError, e:
-        print 'Bad url or timeout, no soup for you!'
-        print e.fp.read()
-        return None
+    # except urllib2.HTTPError, e:
+    #     print 'HTTPError, no soup for you!'
+    #     return None
+    # except urllib2.URLError, e:
+    #     print 'Bad url or timeout, no soup for you!'
+    #     return None
+    # except socket.timeout, e:
+    #     print "Timeout error, no soup for you!"
+    #     return None
 
 
 
@@ -90,7 +98,7 @@ def get_soup(url):
 
 if __name__ == '__main__':
 
-    search_results = get_search_results() #get_search_results(testing=True)
+    search_results = get_search_results(100) #get_search_results(testing=True)
 
     # print search_results
 

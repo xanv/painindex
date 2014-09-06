@@ -51,7 +51,7 @@ def make_features(search_results, num_features):
     for pain in article_wordlists:
         wordlists = article_wordlists[pain]
         features[pain] = [make_feature(w, toplist) for w in wordlists]
-    return features
+    return features, toplist
 
 
 
@@ -142,11 +142,11 @@ def get_pain_index(filename):
 
 
 if __name__ == "__main__":
-    with open('../data/outputs/search_results_and_texts_2014_09_04_1930.txt', 'r') as json_data:
+    with open('../data/outputs/search_results_and_texts_2014_09_05_1527.txt', 'r') as json_data:
         search_results = json.load(json_data)
 
-    NUM_FEATURES = 100
-    features = make_features(search_results, NUM_FEATURES)
+    NUM_FEATURES = 200
+    features, toplist = make_features(search_results, NUM_FEATURES)
     # print features['fire ant'][:2]
 
     pain_index = get_pain_index('../data/inputs/schmidt_ratings1.txt')
@@ -155,5 +155,10 @@ if __name__ == "__main__":
 
     with open('../data/outputs/paindata.txt', 'w') as outfile:
         json.dump(dataset, outfile)
+
+    # Save the toplist, so we can see what words correspond to
+    # each element of a feature vector.
+    with open('../data/outputs/toplist%d.txt' % NUM_FEATURES, 'w') as outfile2:
+        json.dump(toplist, outfile2)
 
 
