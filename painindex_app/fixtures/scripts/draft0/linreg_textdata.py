@@ -141,7 +141,7 @@ print sorted_wordvals[:10]
 
 # Error analysis: look at articles that are getting really misjudged.
 # See what is causing the problems.
-for pain in set(pains_train):
+for pain in list(set(pains_train))[3:]:
 
     # Extract the indices corresponding to this pain
     indices = [i for (i, x) in zip(range(m_train), pains_train)
@@ -164,11 +164,11 @@ for pain in set(pains_train):
 
     print "\nPain:", pain
     print "True intensity:", pain_true[0]
-    # print "\nArticle with worst overestimate of pain intensity:"
-    # print "(Diff: %f)" % overestimates[worst_over_idx]
-    # print worst_over_article 
-    print "\nArticle with worst underestimate of pain intensity:"
-    print "(Diff: %f)" % overestimates[worst_under_idx]
-    print worst_under_article
+    print "\nArticle with worst overestimate of pain intensity:"
+    print "(Diff: %f)" % overestimates[worst_over_idx]
+    print worst_over_article 
+    # print "\nArticle with worst underestimate of pain intensity:"
+    # print "(Diff: %f)" % overestimates[worst_under_idx]
+    # print worst_under_article
 
     break
