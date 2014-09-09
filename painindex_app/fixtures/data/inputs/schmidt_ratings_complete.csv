@@ -1,4 +1,4 @@
-Family,Species,Kind or Group,Pain,Duration (minutes)
+family,species,name,pain,duration_in_minutes
 Anthophoridae,Xylocopa magnifica,,3,10
 Anthophoridae,Centris pallida,Digger Bee,2,2
 Anthophoridae,Diadasia rinconis,Cactus Bee,2,2
