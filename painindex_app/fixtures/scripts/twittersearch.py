@@ -63,11 +63,11 @@ def import_pains(filename):
 
 def get_tweets(pain_names):
     """Get twitter search results corresponding to the pain names.
-        Return a dict with key=pain_name, val=list of search results.
+        Return a dict with key=pain_name, val=list of tweet objects.
     """
     tweets = {}
     print "Grabbing tweets..."
-    
+
     # When debugging, don't run this on all pain_names.
     # You can easily hit Twitter's rate limit within a 15-minute window.
     for i, name in enumerate(pain_names):
