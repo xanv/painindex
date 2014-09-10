@@ -1,0 +1,37 @@
+[
+  {
+    "model": "painindex_app.painsource",
+    "pk": 1,
+    "fields": {
+      "name": "bee"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 2,
+    "fields": {
+      "name": "terrible bug"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 3,
+    "fields": {
+      "name": "spider"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 4,
+    "fields": {
+      "name": "bug"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 5,
+    "fields": {
+      "name": "moth"
+    }
+  }
+]

@@ -7,5 +7,22 @@ $background: #FFFFFF;
 }
 
 h1 {
-  color: blue;
+  color: #910E00;
 }
+
+.index_block {
+  width: 100%;
+  height: 40px;
+  margin: auto;
+}
+
+#index {
+  width: 50px;
+  margin:auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(#B10900, #FF0D00,#FF0D00, #FF5C00, #FFA200);
+}
+
+
+

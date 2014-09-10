@@ -10,7 +10,7 @@ def homepage(request):
 
 def painsource_detail(request, painsource_id):
     painsource = get_object_or_404(PainSource, pk=painsource_id)
-    return render(request, 'painsource_detail.html', {'painsource': "hi"})
+    return render(request, 'painindex_app/painsource_detail.html', {'painsource': painsource})
 
 def painreport_form(request):
-        return render(request, 'painindex_app/painreport.html')
+    return render(request, 'painindex_app/painreport.html')

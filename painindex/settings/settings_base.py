@@ -14,6 +14,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # We can repeat this to get the parent of the parent of the parent,
 # which for our directory structure is the root directory of the project
 import os
+from os.path import dirname
 BASE_DIR = dirname(dirname(dirname(__file__)))
 # print BASE_DIR # (full path of project_dir)
 

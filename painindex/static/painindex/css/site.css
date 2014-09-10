@@ -3,6 +3,16 @@
   width: 500px; }
 
 h1 {
-  color: blue; }
+  color: #910E00; }
 
-/*# sourceMappingURL=site.css.map */
+.index_block {
+  width: 100%;
+  height: 40px;
+  margin: auto; }
+
+#index {
+  width: 50px;
+  margin: auto;
+  border-radius: 10px;
+  overflow: hidden;
+  background: linear-gradient(#b10900, #ff0d00, #ff0d00, #ff5c00, #ffa200); }
