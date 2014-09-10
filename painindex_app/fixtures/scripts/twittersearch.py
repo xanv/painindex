@@ -22,7 +22,7 @@ https_handler = urllib2.HTTPSHandler(debuglevel=_debug)
 
 def main():
     pains = import_pains('../data/inputs/schmidt_ratings_complete.csv')
-    names = [pain[0] for pain in pains]
+    names = pains.keys()
     tweets = get_tweets(names)
 
     # Save the tweets and pains files for easy reloading later.
@@ -34,7 +34,7 @@ def main():
 
 
 def import_pains(filename):
-    """Return a list of [name, intensity] pairs from a csv file.
+    """Return a dict of name:intensity pairs from a csv file.
         The file must be in the form of schmidt_ratings_complete.csv.
     """
     data_str = open(filename, 'r').read().strip()
@@ -47,12 +47,12 @@ def import_pains(filename):
     # There are also some redundant names, like several species of wasp all
     # colloquially known as Paper Wasps. Get rid of redundant names
     # by simply keeping the first instance of each.
-    pains = []
+    pains = {}
     names = set()
     for row in data[1:]:
         name, intensity = row[name_idx], row[intensity_idx]
         if name != '' and name not in names:
-            pains.append([name, float(intensity)])
+            pains[name] = float(intensity)
             names.add(name)
 
     print ("Pain index has been imported; %d of %d pains remain after processing."
@@ -70,10 +70,11 @@ def get_tweets(pain_names):
 
     # When debugging, don't run this on all pain_names.
     # You can easily hit Twitter's rate limit within a 15-minute window.
-    for i, name in enumerate(pain_names):
-        if i%5 == 0: print "On pain #%d..." % i
-        query = urllib.urlencode({'q': name + ' stung'})
+    for i, name in enumerate(pain_names[:10]):
+    # for i, name in enumerate(pain_names):
+        query = urllib.urlencode({'q': name + ' stung', 'count': '100'})
         url = "https://api.twitter.com/1.1/search/tweets.json?" + query
+        print url
 
         parameters = []
         response = twitterreq(url, "GET", parameters)
@@ -83,7 +84,12 @@ def get_tweets(pain_names):
         if calls_left == 0:
             raise Exception("Rate Limit Exceeded! (Wait 15 minutes)")
 
-        tweets[name] = [line.strip() for line in response]
+        # The response for Twitter search is a single-line response,
+        # namely a json string with a search_metadata field and statuses field.
+        # The latter contains a list of tweet objects, which we want.
+        lines = response.readlines()
+        assert len(lines) == 1 # (unlike the streaming API)
+        tweets[name] = json.loads(lines[0])['statuses']
 
     print "\nAll tweets have been grabbed!"
     return tweets
