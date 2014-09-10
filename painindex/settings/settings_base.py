@@ -11,7 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-# print BASE_DIR
+print BASE_DIR
 # (full path of project_dir/painindex since that's the dir that contains the settings module )
 
 
