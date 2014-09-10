@@ -5,7 +5,7 @@
 The API is convenient but only returns a small subset of search results.
 It is intended for ongoing realtime searching.
 Our purposes are different: We want a one-time snapshot of as many results per
-pain source as possible. Scraping is 
+pain source as possible. Scraping is the solution.
 """
 
 import json
@@ -79,6 +79,7 @@ def import_pains(filename):
     print ("Pain index has been imported; %d of %d pains remain after processing."
         % (len(pains), len(data)-1))
     return pains
+
 
 
 def get_tweets_api(pain_names):
@@ -176,7 +177,7 @@ def get_tweets_scraped(pain_names):
 
         tweet_items = soup.select('p.js-tweet-text.tweet-text')
         tweet_texts = [tweet.get_text() for tweet in tweet_items]
-        
+
         print "Num tweets: %d" % len(tweet_texts)
 
         tweets[pain] = [ {'text': text} for text in tweet_texts]
@@ -205,6 +206,7 @@ def get_soup(url):
     except: # If we have ANY error retrieving the page, move on.
         print "No soup for you!"
         return None    
+
 
 
 if __name__ == '__main__':
