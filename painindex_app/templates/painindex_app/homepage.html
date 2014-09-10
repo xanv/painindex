@@ -6,25 +6,90 @@
 
 {% block main_content_title %}
     
-  Welcome to a World of Pain  
+  
 
 {% endblock %}
 
-{% block main_content %}
-  <h4>Share your pain with the world</h4>
+{% block header %}
+  <div class = "full-width">
+    <div class = "row">
 
-  <h3>The Index</h3>
-  <div id = "index">
-    <div class = "index_block" id = "block_1"></div>
-    <div class = "index_block" id = "block_2"></div>
-    <div class = "index_block" id = "block_3"></div>
-    <div class = "index_block" id = "block_4"></div>
-    <div class = "index_block" id = "block_5"></div>
-    <div class = "index_block" id = "block_6"></div>
-    <div class = "index_block" id = "block_7"></div>
-    <div class = "index_block" id = "block_8"></div>
-    <div class = "index_block" id = "block_9"></div>
-    <div class = "index_block" id = "block_10"></div>
+      <div class = "col-md-5" >
+        <h1>Welcome</h1>
+        <h2> to the Pain Index  </h2>
+        <h4 id = "discover">Discover a World of Pain.</h4>
+
+        <div id = "call_to_report">
+          <p>Have you been stung by a yellow jacket, bitten by an evil spider, or had pain inflicted on you by any other venomous creature?  Let us know just how much it hurt!</p>
+          <a href="{% url 'painindex_app:painreport' %}" role = 'button' class="btn btn-info btn-lg active">submit a pain report</a>
+        </div>
+      </div>
+
+      <div class = "col-md-7" id = "index_col">
+        <h3>The Index</h3>
+        <div class = "inline" id = "source_col">
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block">lots of wordsss</div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+          <div class = "index_block"></div>
+        </div>
+
+        <div class = "inline">
+          <div id = "top">10</div>
+          <div id = "index" >
+            <div class = "index_block" id = "block_10"></div>
+            <div class = "index_block" id = "block_9"></div>
+            <div class = "index_block" id = "block_8"></div>
+            <div class = "index_block" id = "block_7"></div>
+            <div class = "index_block" id = "block_6"></div>
+            <div class = "index_block" id = "block_5"></div>
+            <div class = "index_block" id = "block_4"></div>
+            <div class = "index_block" id = "block_3"></div>
+            <div class = "index_block" id = "block_2"></div>
+            <div class = "index_block" id = "block_1"></div>
+          </div>
+          <div id = "bottom"><p>0</p></div>
+        </div>
+
+        <div id = "info">
+          About a bug
+        </div>
+        </div>
+      </div>
+    </div>
   </div>
+{% endblock %}
+
+{% block main_content %}
+<div class = "row">
+  <div class = "col-md-4">
+    
+    <div id = "funfact"><p>This is where a fun fact will go.</p>
+      <div class = "dot"></div>
+      <div class = "dot"></div>
+      <div class = "dot"></div>
+      <div class = "dot"></div>
+      <div class = "dot"></div>
+      <h4>Did you know?</h4>
+    </div>
+    
+    
+    
+  </div>
+  <div class = "col-md-4">
+    <h4>Explore this site</h4>
+  </div>
+  <div class = "col-md-4">
+    <h4>Share your pain with the world</h4>
+  </div>
+</div>
 
 {% endblock %}
