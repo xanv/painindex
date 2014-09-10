@@ -9,11 +9,13 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# __file__ gives the full filepath of settings_base.py.
+# os.path.dirname(__file__) gives the parent directory.
+# We can repeat this to get the parent of the parent of the parent,
+# which for our directory structure is the root directory of the project
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-print BASE_DIR
-# (full path of project_dir/painindex since that's the dir that contains the settings module )
-
+BASE_DIR = dirname(dirname(dirname(__file__)))
+# print BASE_DIR # (full path of project_dir)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -96,9 +98,9 @@ STATIC_URL = '/static/'
 
 
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'painindex/static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'painindex/templates'),
 )
