@@ -18,13 +18,14 @@ import os
 
 
 def main():
-    "All configuration (filepaths, debug=True) should be done here."
+    "All configuration (filepaths, debug=True/False) should be done here."
 
     pains = import_pains('../data/inputs/schmidt_ratings_complete_simplified.csv')
     names = pains.keys()
 
     # Dict with key = pain name, val = list of search result texts
     search_results = get_search_results(names, debug=False)
+
 
     with open('../data/outputs/pains.txt', 'w') as outfile1:
         json.dump(pains, outfile1)
@@ -104,7 +105,7 @@ def get_search_results(pain_names, debug=False):
         search_results[pain] = [ {'text': text} for text in search_texts]
 
     # print search_results
-    
+
     print "\nAll search results have been scraped!"
     return search_results
 
