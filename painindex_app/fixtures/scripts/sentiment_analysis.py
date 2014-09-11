@@ -32,6 +32,8 @@ training data.
 Advantages and disadvantages:
 
 1) This is a good first approach, quick and easy. It may perform well.
+And we have the potential to collect a huge amount of data, which may
+make it work very well.
 
 2) The approach is sensitive to what sort of text the search query picks out. To
 extend this to predict pain for new subjects, we could easily do google searches
@@ -55,8 +57,9 @@ If the word "ouch" only appears in tweets with intensity 4, then its mere
 presence should predict a 4 regardless of the other words. A regression  could
 take this into account, whereas here we just weight everything equally.
 
-Yes, looking at the results, it appears we are seriously diluting the impact
+Looking at the results, it appears we are seriously diluting the impact
 of important words by giving them equal weight despite their predictive power.
+However, it may still perform well when we throw lots of data at it.
 
 Refinements:  Use a regression. (Think of each result as a feature vector of the
 words it does and does not contain) Use a natural language processing library to
@@ -102,17 +105,32 @@ def main():
     # DIAGNOSTICS:
     # Evaluate performance on training vs test data here.
 
-    # diff_train = {pain: predicted_pain_train[pain] - pains[pain] 
-    #     for pain in predicted_pain_train}
-    # diff_test = {pain: predicted_pain_test[pain] - pains[pain] 
-    #     for pain in predicted_pain_test}
+    # Currently the results are okay but there are problems.
+    # Depending on the seed, we get 0.1-0.2 avg abs diff for the training set
+    # and 0.5-0.7 abs diff for the test set.
+    # I could live with being off by half a unit on a 4-point scale, but
+    # consider that most bugs are between 2 and 4, so if we just guessed 3 
+    # (or 2.6) every time, we would do pretty well.
+    # 
+    # seed = 47 gets us 0.59 but does poorly on inspection: Warrior Wasp and 
+    # Bullet Ant get 2.5's! (And yes, Tarantula Hawk is in the training set).
+    # All of the predicted ratings are between 2 and 3.
 
-    # avg_diff_train = sum(abs(t) for t in diff_train.values()) / len(diff_train)
-    # avg_diff_test = sum(abs(t) for t in diff_test.values()) / len(diff_test)
 
-    # print "\n", diff_train
-    # print "\n", diff_test
-    # print "\n", avg_diff_train, avg_diff_test
+    print predicted_pain_train
+    print predicted_pain_test
+
+    diff_train = {pain: predicted_pain_train[pain] - pains[pain] 
+        for pain in predicted_pain_train}
+    diff_test = {pain: predicted_pain_test[pain] - pains[pain] 
+        for pain in predicted_pain_test}
+
+    avg_diff_train = sum(abs(t) for t in diff_train.values()) / len(diff_train)
+    avg_diff_test = sum(abs(t) for t in diff_test.values()) / len(diff_test)
+
+    print "\n", diff_train
+    print "\n", diff_test
+    print "\n", avg_diff_train, avg_diff_test
     
 
 
