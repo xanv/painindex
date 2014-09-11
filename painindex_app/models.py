@@ -23,6 +23,8 @@ class PainSource(models.Model):
         For example, a yellow jacket sting.
     """
     name = models.CharField(max_length=255, unique=True)
+    description = models.TextField(null=True, blank=True)
+    pain_rating = models.FloatField(null=True, blank=True)
     tags = models.ManyToManyField(PainTag, null=True, blank=True)
     
     def __unicode__(self):
@@ -31,7 +33,7 @@ class PainSource(models.Model):
     class Meta:
         ordering = ('name',)
 
-    def get_rating(self):
+    def calc_rating(self):
         """ Get the average intensity rating from all PainReports
             associated with this PainSource.
 
@@ -43,9 +45,16 @@ class PainSource(models.Model):
         intensities = [r.intensity for r in reports]
         avg = float(sum(intensities)) / len(reports)
 
+        self.pain_rating = avg
         return avg
 
-
+    def reviews(self):
+        """ Get all the reviews users have submitted for this PainSource"""
+        reviews = []
+        for report in self.pain_reports.all():
+            reviews.append(report.description)
+        return reviews
+        # PainReport.objects.all().filter(pain_source_id=self.pk).
 
 
 class PainReport(models.Model):
@@ -57,10 +66,12 @@ class PainReport(models.Model):
 
     pain_source = models.ForeignKey(PainSource)
     intensity = models.IntegerField(choices=SCALE_CHOICES)
+    description = models.TextField(null=True, blank=True)
     profile = models.ForeignKey('PainReportProfile', null=True, blank=True)
 
     def __unicode__(self):
         return "PainReport %d: %s" % (self.pk, self.pain_source.name)
+
 
 class PainReportProfile(models.Model):
     """ A bundle of all PainReports from a single entity.
@@ -72,3 +83,11 @@ class PainReportProfile(models.Model):
     
     def __unicode__(self):
         return "PainReportProfile %d" % self.pk
+
+class FunFact(models.Model):
+    """A fun fact about venomous animals"""
+
+    content = models.TextField()
+
+    def __unicode(self):
+        return "FunFact %d" % self.pk
