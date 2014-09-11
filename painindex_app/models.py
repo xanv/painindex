@@ -43,18 +43,21 @@ class PainSource(models.Model):
         """
         reports = self.painreport_set.all()
         intensities = [r.intensity for r in reports]
-        avg = float(sum(intensities)) / len(reports)
+        if len(reports) > 0:
+            avg = float(sum(intensities)) / len(reports)
 
-        self.pain_rating = avg
-        return avg
+            self.pain_rating = avg
+            self.save()
+            return avg
 
     def reviews(self):
         """ Get all the reviews users have submitted for this PainSource"""
         reviews = []
-        for report in self.pain_reports.all():
+        reports = PainReport.objects.all().filter(pain_source_id=self.pk)
+
+        for report in reports:
             reviews.append(report.description)
         return reviews
-        # PainReport.objects.all().filter(pain_source_id=self.pk).
 
 
 class PainReport(models.Model):

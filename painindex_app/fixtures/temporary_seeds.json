@@ -3,35 +3,84 @@
     "model": "painindex_app.painsource",
     "pk": 1,
     "fields": {
-      "name": "bee"
+      "name": "bee",
+      "description": "it buzzes.  usually is yellow.  it's medium evil"
     }
   },
   {
     "model": "painindex_app.painsource",
     "pk": 2,
     "fields": {
-      "name": "terrible bug"
+      "name": "terrible bug",
+      "description": "terrible terrible terrible horrible terrible terrible"
     }
   },
   {
     "model": "painindex_app.painsource",
     "pk": 3,
     "fields": {
-      "name": "spider"
+      "name": "spider",
+      "description": "I especially hate spiders.  they are creepy.  but you probably already knew that."
     }
   },
   {
     "model": "painindex_app.painsource",
     "pk": 4,
     "fields": {
-      "name": "bug"
+      "name": "bug",
+      "description": "that is so vague.  not sure what else to say."
     }
   },
   {
     "model": "painindex_app.painsource",
     "pk": 5,
     "fields": {
-      "name": "moth"
+      "name": "moth",
+      "description": "seems like moths probably don't belong on this list.  blah blah blah blah blah blah blah lorem blah blah blah."
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 1,
+    "fields": {
+      "pain_source": 1,
+      "intensity": 4,
+      "description": "it was the worst"
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 2,
+    "fields": {
+      "pain_source": 1,
+      "intensity": 5,
+      "description": "it was terrible"
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 3,
+    "fields": {
+      "pain_source": 2,
+      "intensity": 8
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 4,
+    "fields": {
+      "pain_source": 3,
+      "intensity": 2,
+      "description": "i've been stung by worse"
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 5,
+    "fields": {
+      "pain_source": 4,
+      "intensity": 4,
+      "description": "unfortunate experience"
     }
   }
 ]
