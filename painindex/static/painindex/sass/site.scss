@@ -29,7 +29,7 @@ $background: #FFFFFF;
   }
 
   h1 {
-    padding:.5em 0 0 0;
+    padding:.3em 0 0 0;
     font-family: Palatino;
     font-size: 6em;
     color: white;
@@ -51,7 +51,7 @@ $background: #FFFFFF;
 
   #call_to_report {
     width: 75%;
-    padding: 1em 3em;
+    padding: 2em 3em;
     margin: auto;
     text-align: left;
     background-color: lightgrey;
@@ -69,7 +69,7 @@ $background: #FFFFFF;
 
   #index_col {
     padding: 0 2em;
-    background-color: rgba(255,255,255,0.2);
+    background-color: rgba(255,255,255,0.15);
     overflow: hidden;
     width: 90%;
     margin: auto;
@@ -98,6 +98,20 @@ $background: #FFFFFF;
       padding: 2em;
       width: 50%;
       margin: 4em;
+      h3, h4 {
+        color: black;
+      }
+
+      h2 {
+        color: black;
+        text-shadow: none;
+        font-size: 1.5em;
+        font-variant: small-caps;
+        font-weight: normal;
+        letter-spacing: 0.5em;
+        font-style: italic;
+        border-bottom: 1px solid black;
+      }
     }
 
     #source_col {

@@ -30,16 +30,15 @@
         <h3>The Index</h3>
         <div class = "inline" id = "source_col">
           <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block">lots of wordsss</div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
-          <div class = "index_block"></div>
+
+          {% for bug in find_bugs %}
+            {% if bug == None %}
+              <div class = "index_block"></div>       
+            {% else %}
+              <div class = "index_block"><a href="{% url 'painindex_app:painsource_detail' bug.pk %}">{{ bug }} ({{ bug.pain_rating}})</a></div>
+            {% endif %}
+          {% endfor%}
+
           <div class = "index_block"></div>
         </div>
 
@@ -62,7 +61,11 @@
 
 
         <div id = "info">
-          About a bug
+          <h2>featured bug</h2>
+          <h3>{{highlighted_bug.name.capitalize}}</h3>
+          <h4>Pain rating: {{highlighted_bug.pain_rating}}</h4>
+          <p>{{highlighted_bug.short_description}}</p>
+          <p><a href="{% url 'painindex_app:painsource_detail' highlighted_bug.pk %}">Get more info</a></p>
         </div>
         </div>
       </div>

@@ -16,6 +16,13 @@ class PainTag(models.Model):
     def __unicode__(self):
         return self.name
         
+class PainSourceManager(models.Manager):
+    def in_range(self, lower_bound, upper_bound):
+        import random
+        results = self.filter(pain_rating__gte=lower_bound).filter(pain_rating__lt=upper_bound)
+        if len(results) > 0:
+            r = random.randint(0, len(results) - 1)
+            return results[r]
 
 
 class PainSource(models.Model):
@@ -25,8 +32,10 @@ class PainSource(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     pain_rating = models.FloatField(null=True, blank=True)
+    predicted_pain_rating = models.FloatField(null=True, blank=True)
     tags = models.ManyToManyField(PainTag, null=True, blank=True)
-    
+    objects = PainSourceManager()
+
     def __unicode__(self):
         return self.name
         
@@ -57,6 +66,9 @@ class PainSource(models.Model):
         for report in self.painreport_set.all():
             reviews.append(report.description)
         return reviews
+
+    def short_description(self):
+        return self.description[0:1000]
 
 
 class PainReport(models.Model):
