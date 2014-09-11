@@ -1,4 +1,9 @@
-"""Collect data from Twitter in two ways:
+"""THIS FILE IS DEPRECATED.
+We moved on to scraping google results.
+The volume just wasn't good for relevant tweets, even
+when scraped.
+
+Collect data from Twitter in two ways:
 1) Use the Twitter search API to query for sting related tweets.
 2) Scrape Twitter to manually grab the results of such queries.
 
@@ -39,8 +44,11 @@ def main():
     pains = import_pains('../data/inputs/schmidt_ratings_complete.csv')
     names = pains.keys()
 
+    # I have given up on the Twitter API for this exercise, but the code is
+    # fully functional.
+
     # Use Twitter API
-    tweets = get_tweets_api(names)
+    # tweets = get_tweets_api(names)
 
     # Scrape Twitter
     tweets_scraped = get_tweets_scraped(names)
@@ -48,8 +56,8 @@ def main():
     # Save the tweets and pains files for later use.
     with open('../data/outputs/pains.txt', 'w') as outfile1:
         json.dump(pains, outfile1)
-    with open('../data/outputs/twitter_results.txt', 'w') as outfile2:
-        json.dump(tweets, outfile2)
+    # with open('../data/outputs/twitter_results.txt', 'w') as outfile2:
+    #     json.dump(tweets, outfile2)
     with open('../data/outputs/twitter_results_scraped.txt', 'w') as outfile3:
         json.dump(tweets_scraped, outfile3)
 
