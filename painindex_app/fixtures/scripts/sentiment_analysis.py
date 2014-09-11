@@ -70,6 +70,7 @@ import re
 from sklearn import linear_model
 import numpy as np
 from collections import defaultdict
+import random
 
 
 def main():
@@ -79,15 +80,40 @@ def main():
     with open('../data/outputs/search_results_20140910.txt') as json_search_results:
         search_results = json.load(json_search_results)
 
-    results_wordified = wordified(search_results)
-    word_sentiments = find_word_sentiments(results_wordified, pains)
-    pain_sentiments = find_pain_sentiments(results_wordified, word_sentiments)
+    results_train, results_test = split_data(search_results, 
+        split_frac=0.6, seed=4747)
 
-    # print word_sentiments
-    print pain_sentiments
+    results_train_wds = wordified(results_train)
 
-    f = get_sentiment_converter(pains, pain_sentiments, degree=1)
+    # Get sentiments for each word and pain in results_train
+    word_sentiments = find_word_sentiments(results_train_wds, pains)
+    pain_sentiments = find_pain_sentiments(results_train_wds, word_sentiments)
 
+    # Using word_sentiments and pain_sentiments computed over the training set,
+    # we create a function that predicts pain for any input.
+    predict_pain = make_pain_predictor(pains, word_sentiments, pain_sentiments,
+        degree=2)
+
+    predicted_pain_train = predict_pain(results_train)
+    predicted_pain_test = predict_pain(results_test)
+
+
+
+    # DIAGNOSTICS:
+    # Evaluate performance on training vs test data here.
+
+    # diff_train = {pain: predicted_pain_train[pain] - pains[pain] 
+    #     for pain in predicted_pain_train}
+    # diff_test = {pain: predicted_pain_test[pain] - pains[pain] 
+    #     for pain in predicted_pain_test}
+
+    # avg_diff_train = sum(abs(t) for t in diff_train.values()) / len(diff_train)
+    # avg_diff_test = sum(abs(t) for t in diff_test.values()) / len(diff_test)
+
+    # print "\n", diff_train
+    # print "\n", diff_test
+    # print "\n", avg_diff_train, avg_diff_test
+    
 
 
 def wordified(search_results):
@@ -96,15 +122,36 @@ def wordified(search_results):
         In other words, return a dict with key=pain name, val=list of results 
         where each result is now a list of the words the result contains.
     """
-    return {pain: [get_words(result['text']) for result in search_results[pain]]
+    # We strip out the name of the pain from each text, so the training process
+    # cannot rely on essentially knowing the name of the bug.
+    # (This is not a huge deal for the current approach that takes the equal-weighted
+    # average over each word)
+    return {pain: [get_words(result['text'].replace(pain, '')) for result in search_results[pain]]
         for pain in search_results}
 
 def get_words(text):
-    "Return a list of words in text."
+    "Return a processed list of words in text."
     # TODO: Use nltk to do this properly.
     # Or at least regex
     # e.g. re.findall(r'\b\w+\b', text)
     return text.lower().split()
+
+def split_data(results, split_frac, seed):
+    """Return results split into two pieces according to split_frac.
+        Pain names are shuffled according to seed.
+    """
+    pain_names = results.keys()
+    random.seed(seed)
+    random.shuffle(pain_names)
+
+    num_pains_train = int( split_frac*len(pain_names) )
+    pains_train = pain_names[:num_pains_train]
+    pains_test = pain_names[num_pains_train:]
+
+    results_train = {pain: results[pain] for pain in pains_train}
+    results_test = {pain: results[pain] for pain in pains_test}
+
+    return results_train, results_test
 
 def find_word_sentiments(results_wordified, pains):
     "Return dict of sentiment scores for all words in all results."
@@ -130,51 +177,96 @@ def find_pain_sentiments(results_wordified, word_sentiments):
     for pain in results_wordified:
         results = results_wordified[pain]
 
-        if len(results) == 0:
-            print "No results for %s..." % pain
-            continue
-        print "Found %d results for %s." % (len(results), pain)
+        # if len(results) == 0:
+        #     print "No results for %s..." % pain
+        #     continue
+        # print "Found %d results for %s." % (len(results), pain)
     
         result_sentiments = [find_result_sentiment(result, word_sentiments) 
             for result in results]
-        pain_sentiments[pain] = sum(result_sentiments) / len(result_sentiments)
+        result_sentiments = [s for s in result_sentiments if s is not None]
+
+        try:
+            pain_sentiments[pain] = sum(result_sentiments) / len(result_sentiments)
+        except ZeroDivisionError:
+            pain_sentiments[pain] = None
     
     return pain_sentiments
 
 def find_result_sentiment(words, word_sentiments):
-    "Compute average sentiment for a result represented as a list of words."
-    return sum(word_sentiments[wd] for wd in words) / len(words)
+    """Compute average sentiment for a result represented as a list of words.
+        Words not in word_sentiments are ignored.
+        If we don't have sentiment for any wd in words, return None.
+    """
+    word_ratings = [word_sentiments[wd] for wd in words 
+        if wd in word_sentiments]
+    
+    if len(word_ratings) == 0:
+        return None
+
+    return sum(word_ratings) / len(word_ratings)
+
+def make_pain_predictor(pains, word_sentiments, pain_sentiments, degree):
+    """Return a function that makes pain predictions for any set of results.
+    Results are in their original dictionary form (with 'text' field).
+    The function returns a dict of pain name: predicted pain level.
+
+    This function is trained using word_sentiments and pain_sentiments.
+    degree is the degree of the polynomial to fit with sentiment_converter.
+    """
+    # f will convert pain_sentiment into predicted pain level.
+    # This is necessary because sentiment itself does not equal predicted pain.
+    # sentiment_converter runs a regression to determine coefficients
+    # for the transformation, so it's important that the conversion is only
+    # run once and then used in every call to pain_predictor below.
+    f = sentiment_converter(pains, pain_sentiments, degree=degree)
+
+    def pain_predictor(results):
+        sentiments = find_pain_sentiments(wordified(results), word_sentiments)
+
+        # If want to include keys with None predictions:
+        # predicted_pain = {}
+        # for pain in sentiments:
+        #     if sentiments[pain] is None:
+        #         predicted_pain[pain] = None
+        #     else:
+        #         predicted_pain[pain] = f(sentiments[pain])
+        
+        # If want to omit keys with None predictions:
+        predicted_pain = {pain: f(sentiments[pain]) for pain in sentiments
+            if sentiments[pain] is not None}
+        return predicted_pain
+
+    return pain_predictor
 
 
-def get_sentiment_converter(pains, pain_sentiments, degree):
+def sentiment_converter(pains, pain_sentiments, degree):
     """Return a function which converts pain sentiment into predicted pain.
-    The sentiment scores are not properly scaled to correspond to the original
-    pain scale. We regress true pain on sentiments (with higher order terms)
+    The sentiment scores do not directly correspond to the original
+    pain scale. We regress true pain on sentiments, with higher order terms
+    up to the degree'th degree of sentiment,
     to produce a function that converts sentiment to predicted true pain. 
     """
+
+    def vectorized(sent):
+        "Turn a sentiment into a feature vector of higher order terms."
+        return np.array([sent**p for p in range(0, degree+1)])
 
     X, y = [], []
 
     for pain, sent in pain_sentiments.items():
         # Each example has terms 1, x, x**2, ..., x**degree
-        x = [sent**i for i in range(0, degree+1)]
+        x = vectorized(sent)
         X.append(x)
         y.append(pains[pain])
 
-    # I have included an intercept manually, so I don't need
-    # it to implicitly add a vector of ones.
+    # I have included an intercept manually, no need to add one.
     LM = linear_model.LinearRegression(fit_intercept=False)
-
     LMfit = LM.fit(X, y)
 
-    # fittedvals = LMfit.predict(X)
-    # for i, yhat in enumerate(fittedvals):
-    #     print yhat, y[i]
+    # Return a function that gives the fitted value for a sentiment s.
+    return lambda s: vectorized(s).dot(LMfit.coef_)
 
-    # print LMfit.coef_
-
-    # Return a function that gives the fitted value for a sentiment x.
-    return lambda x: LMfit.predict([x])[0]
 
 if __name__ == '__main__':
     main()
