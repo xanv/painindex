@@ -1,4 +1,4 @@
-$content_width: 500px;
+$content_width: 600px;
 $background: #FFFFFF;
 @mixin background($imgpath,$position:0 0,$repeat: repeat) {
     background: {
@@ -17,49 +17,70 @@ $background: #FFFFFF;
 .full-width {
   width: 100%;
   background-color: lightyellow;
-  @include background('/static/painindex/imgs/diagmonds.png');
+  @include background('/static/painindex/imgs/diagmonds2.png');
   overflow: hidden;
   padding: 3em;
   margin-right:0;
+  height: 450px;
 
   h1, h2, h3, h4 {
     text-align: center;
-    color: white;
+    color: black;
     font-family: Helvetica;
   }
 
   h1 {
     padding:.3em 0 0 0;
-    font-family: Palatino;
+
     font-size: 6em;
-    color: white;
-    text-shadow: -5px 0 #600, 0 5px #600, 5px 0 #600, 0 -5px #600;
   }
 
   h2 {
     margin: 0 0 1em 0;
     font-variant: small-caps;
-    color: white;
-    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    color: black;
+
     font-weight: bold;
-    font-family: Palatino;
+
   }
 
-  #discover {
+  
+}
+
+#funfact {
+  position: relative;
+
+
+  .dot {
+    border: 1px solid black;
+    width: 10px;
+    height: 10px;
+    margin: 2em auto;
+    border-radius: 10em;
+  } 
+
+  p{
+    padding: 3em;
+    margin: 2em;
+    border-radius: 1em;
+    background-color: #FFA200;
+  }
+}
+
+
+#discover {
     margin: 2em;
   }
 
   #call_to_report {
     width: 75%;
-    padding: 2em 3em;
     margin: auto;
     text-align: left;
-    background-color: lightgrey;
     color: black;
     line-height: 1.8em;
 
     p {
-      padding: 0.5em 0 2em 0;
+      padding: 0.5em 0 3em 0;
     }
 
     a {
@@ -74,6 +95,7 @@ $background: #FFFFFF;
     width: 90%;
     margin: auto;
     color: black;
+    border: 1px solid grey;
 
     .inline {
       display: inline-block;
@@ -137,42 +159,21 @@ $background: #FFFFFF;
       text-align: center;
     }
   }
-}
 
-#funfact {
-  position: relative;
-  top: -10em; 
 
-  .dot {
-    border: 1px solid black;
-    width: 10px;
-    height: 10px;
-    margin: 2em auto;
-    border-radius: 10em;
-  } 
-
-  p{
-    padding: 3em;
-    margin: 2em;
-    border-radius: 1em;
-    background-color: #FFA200;
+#second_row{
+  h2, h3{
+    text-align: center;
   }
 }
 
-.navbar-inverse {
-  background-color: #600;
-
-  .navbar-nav{
-    .active {
-      a{
-        background-color: #600000;
-      }
-    }
-  }
+.container {
+  margin-top: 0;
 }
 
-
-
+.featurette-divider {
+margin: 80px 0;
+}
 
 
 
