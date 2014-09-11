@@ -67,6 +67,8 @@ words, which is a limitation. And much much more...
 
 import json
 import re
+from sklearn import linear_model
+import numpy as np
 from collections import defaultdict
 
 
@@ -83,6 +85,9 @@ def main():
 
     # print word_sentiments
     print pain_sentiments
+
+    f = get_sentiment_converter(pains, pain_sentiments, degree=1)
+
 
 
 def wordified(search_results):
@@ -141,15 +146,35 @@ def find_result_sentiment(words, word_sentiments):
     return sum(word_sentiments[wd] for wd in words) / len(words)
 
 
-# TODO:
-# 7)  fit a polynomial regression of y = pain intensity
-#     and x = predicted pains:
-#     y = b0 + b1 * x + b2 * x^2 + ... + bn * x^n
-#     for some choice of degree n.
-#     This gives us a conversion from pain_sentiment to predicted intensity.
+def get_sentiment_converter(pains, pain_sentiments, degree):
+    """Return a function which converts pain sentiment into predicted pain.
+    The sentiment scores are not properly scaled to correspond to the original
+    pain scale. We regress true pain on sentiments (with higher order terms)
+    to produce a function that converts sentiment to predicted true pain. 
+    """
 
+    X, y = [], []
 
+    for pain, sent in pain_sentiments.items():
+        # Each example has terms 1, x, x**2, ..., x**degree
+        x = [sent**i for i in range(0, degree+1)]
+        X.append(x)
+        y.append(pains[pain])
 
+    # I have included an intercept manually, so I don't need
+    # it to implicitly add a vector of ones.
+    LM = linear_model.LinearRegression(fit_intercept=False)
+
+    LMfit = LM.fit(X, y)
+
+    # fittedvals = LMfit.predict(X)
+    # for i, yhat in enumerate(fittedvals):
+    #     print yhat, y[i]
+
+    # print LMfit.coef_
+
+    # Return a function that gives the fitted value for a sentiment x.
+    return lambda x: LMfit.predict([x])[0]
 
 if __name__ == '__main__':
     main()
