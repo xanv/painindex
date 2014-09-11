@@ -21,11 +21,12 @@
 
         <div id = "call_to_report">
           <p>Have you been stung by a yellow jacket, bitten by an evil spider, or had pain inflicted on you by any other venomous creature?  Let us know just how much it hurt!</p>
-          <a href="{% url 'painindex_app:painreport' %}" role = 'button' class="btn btn-info btn-lg active">submit a pain report</a>
+          <a href="{% url 'painindex_app:painreport' %}" role = 'button' class="btn btn-danger btn-lg btn-block">submit a pain report</a>
         </div>
       </div>
 
-      <div class = "col-md-7" id = "index_col">
+      <div class = "col-md-7">
+        <div id = "index_col">
         <h3>The Index</h3>
         <div class = "inline" id = "source_col">
           <div class = "index_block"></div>
@@ -59,10 +60,12 @@
           <div id = "bottom"><p>0</p></div>
         </div>
 
+
         <div id = "info">
           About a bug
         </div>
         </div>
+      </div>
       </div>
     </div>
   </div>

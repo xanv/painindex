@@ -53,9 +53,8 @@ class PainSource(models.Model):
     def reviews(self):
         """ Get all the reviews users have submitted for this PainSource"""
         reviews = []
-        reports = PainReport.objects.all().filter(pain_source_id=self.pk)
 
-        for report in reports:
+        for report in self.painreport_set.all():
             reviews.append(report.description)
         return reviews
 

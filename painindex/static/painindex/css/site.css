@@ -5,40 +5,58 @@
 .full-width {
   width: 100%;
   background-color: lightyellow;
+  background-image: url("/static/painindex/imgs/diagmonds.png");
+  background-position: 0 0;
+  background-repeat: repeat;
   overflow: hidden;
   padding: 3em;
   margin-right: 0; }
   .full-width h1, .full-width h2, .full-width h3, .full-width h4 {
-    text-align: center; }
+    text-align: center;
+    color: white;
+    font-family: Helvetica; }
   .full-width h1 {
     padding: .5em 0 0 0;
-    font-family: Impact;
-    font-weight: bold;
+    font-family: Palatino;
     font-size: 6em;
-    color: #910E00; }
+    color: white;
+    text-shadow: -5px 0 #600, 0 5px #600, 5px 0 #600, 0 -5px #600; }
   .full-width h2 {
     margin: 0 0 1em 0;
-    font-variant: small-caps; }
+    font-variant: small-caps;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-weight: bold;
+    font-family: Palatino; }
   .full-width #discover {
     margin: 2em; }
   .full-width #call_to_report {
-    border: dashed grey 2px;
     width: 75%;
-    padding: 1em;
+    padding: 1em 3em;
     margin: auto;
-    text-align: center; }
+    text-align: left;
+    background-color: lightgrey;
+    color: black;
+    line-height: 1.8em; }
+    .full-width #call_to_report p {
+      padding: 0.5em 0 2em 0; }
     .full-width #call_to_report a {
       font-variant: small-caps; }
   .full-width #index_col {
     padding: 0 2em;
-    background-color: lightgrey; }
+    background-color: rgba(255, 255, 255, 0.2);
+    overflow: hidden;
+    width: 90%;
+    margin: auto;
+    color: black; }
     .full-width #index_col .inline {
       display: inline-block;
       margin-top: 2em;
       position: relative;
       float: left;
       padding: 0 0.5em;
-      text-align: right; }
+      text-align: right;
+      opacity: 2; }
       .full-width #index_col .inline #top, .full-width #index_col .inline #bottom {
         font-size: 1.5em;
         text-align: center;
@@ -77,3 +95,8 @@
     margin: 2em;
     border-radius: 1em;
     background-color: #FFA200; }
+
+.navbar-inverse {
+  background-color: #600; }
+  .navbar-inverse .navbar-nav .active a {
+    background-color: #600000; }

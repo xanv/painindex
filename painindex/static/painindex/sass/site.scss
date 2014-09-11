@@ -1,5 +1,12 @@
 $content_width: 500px;
 $background: #FFFFFF;
+@mixin background($imgpath,$position:0 0,$repeat: repeat) {
+    background: {
+        image: url($imgpath);
+        position: $position;
+        repeat: $repeat;
+    }
+}
 
 .content {
   background-color: darken($background, 3%);
@@ -10,25 +17,32 @@ $background: #FFFFFF;
 .full-width {
   width: 100%;
   background-color: lightyellow;
+  @include background('/static/painindex/imgs/diagmonds.png');
   overflow: hidden;
   padding: 3em;
   margin-right:0;
 
- h1, h2, h3, h4 {
-  text-align: center;
- }
+  h1, h2, h3, h4 {
+    text-align: center;
+    color: white;
+    font-family: Helvetica;
+  }
 
   h1 {
     padding:.5em 0 0 0;
-    font-family: Impact;
-    font-weight: bold;
+    font-family: Palatino;
     font-size: 6em;
-    color: #910E00;
+    color: white;
+    text-shadow: -5px 0 #600, 0 5px #600, 5px 0 #600, 0 -5px #600;
   }
 
   h2 {
     margin: 0 0 1em 0;
     font-variant: small-caps;
+    color: white;
+    text-shadow: -1px 0 black, 0 1px black, 1px 0 black, 0 -1px black;
+    font-weight: bold;
+    font-family: Palatino;
   }
 
   #discover {
@@ -36,11 +50,17 @@ $background: #FFFFFF;
   }
 
   #call_to_report {
-    border: dashed grey 2px;
     width: 75%;
-    padding: 1em;
+    padding: 1em 3em;
     margin: auto;
-    text-align: center;
+    text-align: left;
+    background-color: lightgrey;
+    color: black;
+    line-height: 1.8em;
+
+    p {
+      padding: 0.5em 0 2em 0;
+    }
 
     a {
       font-variant: small-caps;
@@ -49,7 +69,11 @@ $background: #FFFFFF;
 
   #index_col {
     padding: 0 2em;
-    background-color: lightgrey;
+    background-color: rgba(255,255,255,0.2);
+    overflow: hidden;
+    width: 90%;
+    margin: auto;
+    color: black;
 
     .inline {
       display: inline-block;
@@ -58,6 +82,7 @@ $background: #FFFFFF;
       float: left;
       padding: 0 0.5em;
       text-align: right;
+      opacity: 2;
 
       #top, #bottom {
         font-size: 1.5em;
@@ -119,6 +144,19 @@ $background: #FFFFFF;
     background-color: #FFA200;
   }
 }
+
+.navbar-inverse {
+  background-color: #600;
+
+  .navbar-nav{
+    .active {
+      a{
+        background-color: #600000;
+      }
+    }
+  }
+}
+
 
 
 

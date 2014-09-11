@@ -9,4 +9,13 @@
   All  about a bug: {{painsource}}
 
 {% endblock %}
-<p></p>
+
+{% block main_content %}
+  <p>{{painsource.description}}</p>
+
+  <h4>Some comments from user pain reports:</h4>
+  {% for report in painsource.reviews %}
+    <p>{{ report }}</p>
+  {% endfor %}
+
+{% endblock%}
