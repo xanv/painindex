@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -17,12 +18,14 @@ class PainTag(models.Model):
         return self.name
         
 class PainSourceManager(models.Manager):
-    def in_range(self, lower_bound, upper_bound):
-        import random
+    def select_random_in_range(self, lower_bound, upper_bound):
         results = self.filter(pain_rating__gte=lower_bound).filter(pain_rating__lt=upper_bound)
-        if len(results) > 0:
-            r = random.randint(0, len(results) - 1)
-            return results[r]
+        
+        try:
+            return random.choice(results)
+        except IndexError:
+            return None
+
 
 
 class PainSource(models.Model):
