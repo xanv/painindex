@@ -15,6 +15,9 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 # which for our directory structure is the root directory of the project
 import os
 from os.path import dirname
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
+
+
 BASE_DIR = dirname(dirname(dirname(__file__)))
 # print BASE_DIR # (full path of project_dir)
 
@@ -52,6 +55,14 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+
+# This enables us to access request data from a template, for example
+# so we can access the current page's url.
+# See here: http://stackoverflow.com/questions/7665514/django-highlight-navigation-based-on-current-page
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
