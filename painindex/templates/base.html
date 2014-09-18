@@ -64,9 +64,11 @@
                 {% url 'painindex_app:homepage' as url %}
                 <li {% if request.path == url %} class="active" {% endif %}><a href="{{ url }}">Home</a></li>
                 
-                {# DO THE SAME FOR THE OTHER NAV ELEMENTS ONCE PAGES EXIST #}
+                {# DO THE SAME FOR EXPLORE ONCE PAGE EXISTS #}
                 <li><a href="#about">Explore</a></li>
-                <li><a href="#contact">About</a></li>
+
+                {% url 'painindex_app:about' as url %}
+                <li {% if request.path == url %} class="active" {% endif %}><a href="{{ url }}">About</a></li>
 
               </ul>
               <form class="navbar-form navbar-right" role="search">
