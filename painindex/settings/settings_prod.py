@@ -1,4 +1,4 @@
-from mysite.settings.settings_base import *
+from painindex.settings.settings_base import *
 from env import *
 
 DEBUG = False
