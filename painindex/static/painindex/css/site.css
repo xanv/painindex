@@ -1,3 +1,6 @@
+html {
+  font-family: 'Titillium Web'; }
+
 .content {
   background-color: #f7f7f7;
   width: 600px; }
@@ -14,8 +17,7 @@
   height: 450px; }
   .full-width h1, .full-width h2, .full-width h3, .full-width h4 {
     text-align: center;
-    color: black;
-    font-family: 'Titillium Web', Helvetica; }
+    color: black; }
   .full-width h1 {
     padding: .3em 0 0 0;
     font-size: 6em; }
@@ -24,9 +26,6 @@
     font-variant: small-caps;
     color: black;
     font-weight: bold; }
-
-p {
-  font-family: 'Titillium Web'; }
 
 #funfact {
   position: relative; }

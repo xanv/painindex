@@ -8,11 +8,14 @@ $background: #FFFFFF;
     }
 }
 
+html {
+  font-family: 'Titillium Web';
+}
+
 .content {
   background-color: darken($background, 3%);
   width: $content_width;
 }
-
 
 .full-width {
   width: 100%;
@@ -26,7 +29,6 @@ $background: #FFFFFF;
   h1, h2, h3, h4 {
     text-align: center;
     color: black;
-    font-family: 'Titillium Web', Helvetica;
   }
 
   h1 {
@@ -46,9 +48,6 @@ $background: #FFFFFF;
 
 }
 
-p {
-  font-family: 'Titillium Web';
-}
 
 #funfact {
   position: relative;
