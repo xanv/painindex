@@ -26,7 +26,7 @@ $background: #FFFFFF;
   h1, h2, h3, h4 {
     text-align: center;
     color: black;
-    font-family: Helvetica;
+    font-family: 'Titillium Web', Helvetica;
   }
 
   h1 {
@@ -44,7 +44,10 @@ $background: #FFFFFF;
 
   }
 
-  
+}
+
+p {
+  font-family: 'Titillium Web';
 }
 
 #funfact {

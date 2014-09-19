@@ -15,7 +15,7 @@
   .full-width h1, .full-width h2, .full-width h3, .full-width h4 {
     text-align: center;
     color: black;
-    font-family: Helvetica; }
+    font-family: 'Titillium Web', Helvetica; }
   .full-width h1 {
     padding: .3em 0 0 0;
     font-size: 6em; }
@@ -24,6 +24,9 @@
     font-variant: small-caps;
     color: black;
     font-weight: bold; }
+
+p {
+  font-family: 'Titillium Web'; }
 
 #funfact {
   position: relative; }
@@ -98,7 +101,7 @@
     margin: auto; }
   #index_col #index {
     width: 50px;
-    background: linear-gradient(#600000, #ff0d00, #ff0d00, #ff5c00, #ffa200);
+    background: linear-gradient(#600000, #FF0D00, #FF0D00, #FF5C00, #FFA200);
     position: relative; }
   #index_col h3 {
     margin: 1em;
@@ -112,3 +115,5 @@
 
 .featurette-divider {
   margin: 80px 0; }
+
+/*# sourceMappingURL=site.css.map */
