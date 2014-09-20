@@ -1,0 +1,86 @@
+[
+  {
+    "model": "painindex_app.painsource",
+    "pk": 1,
+    "fields": {
+      "name": "Southern Fire Ant",
+      "description": "The Southern fire ant, Solenopsis xyloni, is a stinging fire ant native to southern parts of the United States.[1] Its behavior is similar to the red imported fire ant (S. invicta), although its sting is less painful. Its main source of food is honeydew collected from aphids and other insects. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 2,
+    "fields": {
+      "name": "Honey Bee",
+      "description": "Honey bees (or honeybees) are bees of the genus Apis, primarily distinguished by the production and storage of honey and the construction of perennial, colonial nests from wax. Honey bees are the only extant members of the tribe Apini, all in the genus Apis. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 3,
+    "fields": {
+      "name": "Bullet Ant",
+      "description": "The pain caused by this insect's sting is purported to be greater than that of any other hymenopteran, and is ranked as the most painful according to the Schmidt sting pain index, given a 4+ rating, above the tarantula hawk wasp and, according to some victims, equal to being shot, hence the name of the insect. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 4,
+    "fields": {
+      "name": "Velvet Ant",
+      "description": "The exoskeleton of all velvet ants is unusually tough (to the point that some entomologists have reported difficulty piercing them with steel pins when attempting to mount them for display in cabinets). This characteristic allows them to successfully invade the nests of their prey and also helps them retain moisture. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 5,
+    "fields": {
+      "name": "Yellowjacket",
+      "description": "These species have lance-like stingers with small barbs, and typically sting repeatedly,[1] though occasionally a stinger becomes lodged and pulls free of the wasp's body; the venom, like most bee and wasp venoms, is primarily only dangerous to humans who are allergic or are stung many times. All species have yellow or white on their faces. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 1,
+    "fields": {
+      "pain_source": 1,
+      "intensity": 1,
+      "description": "That hurt but not the end of the world."
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 2,
+    "fields": {
+      "pain_source": 1,
+      "intensity": 2,
+      "description": "Not too bad if you just get stung by one..."
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 3,
+    "fields": {
+      "pain_source": 2,
+      "intensity": 3
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 4,
+    "fields": {
+      "pain_source": 3,
+      "intensity": 10,
+      "description": "I wanted to die."
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 5,
+    "fields": {
+      "pain_source": 4,
+      "intensity": 7,
+      "description": "I thought it was cute. I don't anymore. Worst pain of my life."
+    }
+  }
+]
