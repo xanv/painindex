@@ -1,3 +1,4 @@
+import random
 from django.db import models
 from django.contrib.auth.models import User
 from django.core.validators import MaxValueValidator, MinValueValidator
@@ -16,6 +17,15 @@ class PainTag(models.Model):
     def __unicode__(self):
         return self.name
         
+class PainSourceManager(models.Manager):
+    def select_random_in_range(self, lower_bound, upper_bound):
+        results = self.filter(pain_rating__gte=lower_bound).filter(pain_rating__lt=upper_bound)
+        
+        try:
+            return random.choice(results)
+        except IndexError:
+            return None
+
 
 
 class PainSource(models.Model):
@@ -25,8 +35,10 @@ class PainSource(models.Model):
     name = models.CharField(max_length=255, unique=True)
     description = models.TextField(null=True, blank=True)
     pain_rating = models.FloatField(null=True, blank=True)
+    predicted_pain_rating = models.FloatField(null=True, blank=True)
     tags = models.ManyToManyField(PainTag, null=True, blank=True)
-    
+    objects = PainSourceManager()
+
     def __unicode__(self):
         return self.name
         
@@ -43,18 +55,23 @@ class PainSource(models.Model):
         """
         reports = self.painreport_set.all()
         intensities = [r.intensity for r in reports]
-        avg = float(sum(intensities)) / len(reports)
+        if len(reports) > 0:
+            avg = float(sum(intensities)) / len(reports)
 
-        self.pain_rating = avg
-        return avg
+            self.pain_rating = avg
+            self.save()
+            return avg
 
     def reviews(self):
         """ Get all the reviews users have submitted for this PainSource"""
         reviews = []
-        for report in self.pain_reports.all():
+
+        for report in self.painreport_set.all():
             reviews.append(report.description)
         return reviews
-        # PainReport.objects.all().filter(pain_source_id=self.pk).
+
+    def short_description(self):
+        return self.description[0:1000]
 
 
 class PainReport(models.Model):

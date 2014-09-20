@@ -1,0 +1,34 @@
+{% extends "base.html" %}
+
+
+{% block title %}About{% endblock %}
+
+
+
+{% block main_content_title %}About The Pain Index{% endblock %}
+
+
+{% block main_content %}
+
+<p><strong>[This site is currently a demo. Please check back soon for added functionality;
+    we are deploying early and often.]</strong>
+</p>
+
+<p>The Pain Index is a pain index. What hurts more, getting stung by a yellowjacket or a saddleback caterpillar? It is 2014 and you have a right to know. The information is out there, and our goal is to synthesize it into a single, easy-to-understand index.
+</p>
+
+<p><strong>Pain is painful.</strong> That's why you care about it, but also why it's difficult to learn about it. People work hard to avoid pain, which means information about pain is highly diffused across the population. Furthermore, painfulness is a subjective, personal experience, so how can we even begin to compare those experiences across people? What does it mean to <em>you</em>, if I say that a yellowjacket sting rates a 4 out of 10?  
+</p>
+
+<p>And yet, 95% of people who have been stung by both a yellowjacket and a saddleback caterpillar agree that the caterpillar is worse. We're all humans, and even if we can't feel each other's pain directly, the painful experiences of others can still teach us something about ourselves. Pain data is diffuse and subjective and noisy, yes, but why should that stop us? It's 2014! We know Science!
+</p>
+
+<p>Here's how it works. When you submit a pain rating for the saddleback caterpillar sting, you are of course helping us to understand how much that sting hurts. But more than that, you are helping us to train a model which knows how to convert natural language into pain intensity. It turns out that when people get hurt, they complain about it on the internets. And when they are in more pain, they complain more loudly. They use different, stronger language, with words like "fire" and "writhing" and "BEJEEZUS."
+</p>
+
+<p>With your help, we are learning to extract the signal from this abundant but noisy data. Even a small amount of user-submitted data can be greatly leveraged by our machine learning algorithm. We can predict intensities for pains that none of our users have ever personally experienced.
+</p>
+
+<p>For the moment, we are focusing on insect stings. Stings are a great starting point because we can use the Schmidt Sting Pain Index in lieu of user-submitted data. Justin O. Schmidt, over the course of his entomology field work, took it upon himself to get stung by 78 different hymenopterans, rating the intensity and duration of each sting. Justin Schmidt, if you're ever in Chicago, we owe you a beer!</p>
+
+{% endblock %}
