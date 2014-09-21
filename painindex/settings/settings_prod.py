@@ -26,7 +26,11 @@ ADMINS = (
 
 
 # Set this to match the domains of the production site.
-ALLOWED_HOSTS = ['www.thepainindex.com', 'thepainindex.com', 'localhost']
+ALLOWED_HOSTS = [
+    'www.thepainindex.com', 'thepainindex.com',
+    'http://still-taiga-5292.herokuapp.com',
+    'localhost'
+]
 
 # Define place my static files will be collected and served from.
 # See https://docs.djangoproject.com/en/1.6/ref/settings/#std:setting-STATIC_ROOT
