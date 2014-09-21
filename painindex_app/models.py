@@ -74,7 +74,10 @@ class PainSource(models.Model):
         return reviews
 
     def short_description(self):
-        return self.description[0:1000]
+        if self.description is not None:
+            return self.description[:1000]
+        else:
+            return ''
 
 
 class PainReport(models.Model):
