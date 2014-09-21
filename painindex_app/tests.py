@@ -8,8 +8,9 @@ from painindex_app.models import PainTag, PainSource, PainReport, PainReportProf
 # with a separate test method for each set of conditions you want to test.
 # Test method names should describe their function.
 
-
+####################
 # HELPER FUNCTIONS #
+####################
 
 def make_tags_and_sources(num_tags, num_sources):
     """ Create a generic set of PainTags and PainSources.
@@ -32,6 +33,9 @@ def make_tags_and_sources(num_tags, num_sources):
 
     return T, S
 
+###############
+# MODEL TESTS #
+###############
 
 class PainSourceManagerTests(TestCase):
 
@@ -121,9 +125,58 @@ class PainSourceModelTests(TestCase):
         # to use a list comprehension 
         pass
     def test_short_description(self):
-        "TODO..."
+        "TODO...be sure to test the case where description is None"
         pass
 
 
 
+###############
+# VIEWS TESTS #
+###############
 
+class HomepageViewTests(TestCase):
+
+    def test_homepage_view_with_sparse_data(self):
+        T, S = make_tags_and_sources(0, 2)
+        R0 = PainReport.objects.create(
+            pain_source=S[0],
+            intensity=5
+        )
+        R1 = PainReport.objects.create(
+            pain_source=S[0],
+            intensity=7
+        )
+        S[0].calc_rating()
+
+        response = self.client.get(reverse('painindex_app:homepage'))
+        # See all available attributes and methods of response:
+        # print dir(response)
+
+        self.assertEqual(response.status_code, 200)
+
+        self.assertEqual(response.context['highlighted_bug'], S[0])
+        assert S[0] in response.context['find_bugs']
+        self.assertEqual( len(response.context['find_bugs']), 10 )
+        
+
+        self.assertContains(response, "The Pain Index")
+        self.assertContains(response, "painsource_0")
+        # Unrated source should not be displayed
+        self.assertNotContains(response, "painsource_1")
+
+    def test_homepage_view_with_more_data(self):
+        "TODO"
+        # test what happens when there are multiple painsources with same
+        # ratings, etc.
+        pass
+
+    # Can also test other elements of homepage...
+
+class PainSourceDetailViewTests(TestCase):
+    "TODO"
+    pass
+
+class PainReportViewTests(TestCase):
+    "TODO"
+    pass
+    # will want to test that posted info is reflected in the updated pain index.
