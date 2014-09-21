@@ -2,3 +2,4 @@
 *.html~
 env.py
 db.sqlite3
+staticfiles
