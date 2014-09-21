@@ -12,7 +12,7 @@ TEMPLATE_DEBUG = False
 
 # Apps used specifically for production
 INSTALLED_APPS += (
-
+    'gunicorn',
 )
 
 
