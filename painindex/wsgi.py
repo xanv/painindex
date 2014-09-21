@@ -9,12 +9,7 @@ https://docs.djangoproject.com/en/dev/howto/deployment/wsgi/
 
 import os
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "painindex.settings.settings_prod")
-
-# Don't need this because we won't be using wsgi in development:
-    # this_machine = os.environ.get("MACHINE", None)    
-    # if this_machine == 'local':
-    #     os.environ["DJANGO_SETTINGS_MODULE"] = "painindex.settings.settings_dev"
+os.environ["DJANGO_SETTINGS_MODULE"] = "painindex.settings.settings_prod"
 
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
