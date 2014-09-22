@@ -69,11 +69,13 @@
 
 
       <div id = "info">
-        <h2>featured bug</h2>
-        <h3>{{highlighted_bug.name.capitalize}}</h3>
-        <h4>Pain rating: {{highlighted_bug.pain_rating}}</h4>
-        <p>{{highlighted_bug.short_description}}</p>
-        <p><a href="{% url 'painindex_app:painsource_detail' highlighted_bug.pk %}">Get more info</a></p>
+        {% if highlighted_bug %}
+          <h2>featured bug</h2>
+          <h3>{{highlighted_bug.name.capitalize}}</h3>
+          <h4>Pain rating: {{highlighted_bug.pain_rating}}</h4>
+          <p>{{highlighted_bug.short_description}}</p>
+          <p><a href="{% url 'painindex_app:painsource_detail' highlighted_bug.pk %}">Get more info</a></p>
+        {% endif %}
       </div>
 
     </div>
