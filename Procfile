@@ -1,1 +1,1 @@
-web: gunicorn painindex.wsgi --log-file -
+web: gunicorn painindex.wsgi:application --log-file -
