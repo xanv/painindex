@@ -2,10 +2,14 @@ import os
 import dj_database_url
 from painindex.settings.settings_base import *
 
-# This file is NOT part of our repo. It contains sensitive settings like secret key
-# and db setup.
-from env import *
 
+try:
+    # This file is not part of the repo and contains secrets like db info.
+    from env import *
+# There is no env.py file on Heroku.
+# We load from environment variables instead.
+except ImportError:
+    SECRET_KEY = os.environ['PAIN_INDEX_SECRET_KEY']
 
 DEBUG = False
 TEMPLATE_DEBUG = False
@@ -33,15 +37,18 @@ ALLOWED_HOSTS = [
 
 # See https://devcenter.heroku.com/articles/getting-started-with-django
 
-DATABASES['default'] = dj_database_url.config()
+# This DATABASES default is just for running foreman locally.
+# I import it in env instead. 
+# DATABASES['default'] = dj_database_url.config()
+# DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Heroku instructions allow all hosts. 
-# If I have a problem, try this.
+# Heroku instructions say to allow all hosts. Sounds like a bad idea.
 # ALLOWED_HOSTS = ['*']
 
-STATIC_ROOT = 'staticfiles'
+STATIC_ROOT = 'staticfiles' # Static files are collected here
+# STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Static files are collected here
 STATIC_URL = '/static/'
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static')
+    os.path.join(BASE_DIR, 'painindex/static'),
 )
