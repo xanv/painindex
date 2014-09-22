@@ -20,9 +20,9 @@ INSTALLED_APPS += (
 )
 
 # These people will get error emails in production
-ADMINS = (
-    ('Xan', 'xan.vong@gmail.com'),
-)
+# ADMINS = (
+#     ('Xan', 'xan.vong@gmail.com'),
+# )
 
 # Set this to match the domains of the production site.
 ALLOWED_HOSTS = [
