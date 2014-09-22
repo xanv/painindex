@@ -9,11 +9,17 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
+# __file__ gives the full filepath of settings_base.py.
+# os.path.dirname(__file__) gives the parent directory.
+# We can repeat this to get the parent of the parent of the parent,
+# which for our directory structure is the root directory of the project
 import os
-BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-# print BASE_DIR
-# (full path of project_dir/painindex since that's the dir that contains the settings module )
+from os.path import dirname
+from django.conf.global_settings import TEMPLATE_CONTEXT_PROCESSORS
 
+
+BASE_DIR = dirname(dirname(dirname(__file__)))
+# print BASE_DIR # (full path of project_dir)
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/dev/howto/deployment/checklist/
@@ -41,6 +47,7 @@ DEFAULT_APPS = (
 )
 
 THIRD_PARTY_APPS = (
+    'django_extensions',
 )
 
 LOCAL_APPS = (
@@ -48,6 +55,14 @@ LOCAL_APPS = (
 )
 
 INSTALLED_APPS = DEFAULT_APPS + THIRD_PARTY_APPS + LOCAL_APPS
+
+
+# This enables us to access request data from a template, for example
+# so we can access the current page's url.
+# See here: http://stackoverflow.com/questions/7665514/django-highlight-navigation-based-on-current-page
+TEMPLATE_CONTEXT_PROCESSORS += (
+    'django.core.context_processors.request',
+)
 
 MIDDLEWARE_CLASSES = (
     'django.contrib.sessions.middleware.SessionMiddleware',
@@ -64,27 +79,15 @@ ROOT_URLCONF = 'painindex.urls'
 WSGI_APPLICATION = 'painindex.wsgi.application'
 
 
-# Database
-# https://docs.djangoproject.com/en/dev/ref/settings/#databases
 
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 
 # Internationalization
 # https://docs.djangoproject.com/en/dev/topics/i18n/
 
 LANGUAGE_CODE = 'en-us'
-
-TIME_ZONE = 'UTC'
-
+TIME_ZONE = 'America/Chicago'
 USE_I18N = True
-
 USE_L10N = True
-
 USE_TZ = True
 
 
@@ -93,11 +96,10 @@ USE_TZ = True
 
 STATIC_URL = '/static/'
 
-
 STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'static'),
+    os.path.join(BASE_DIR, 'painindex/static'),
 )
 
 TEMPLATE_DIRS = (
-    os.path.join(BASE_DIR, 'templates'),
+    os.path.join(BASE_DIR, 'painindex/templates'),
 )

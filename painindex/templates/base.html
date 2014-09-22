@@ -6,18 +6,30 @@
 <html lang="en">
 
 <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>{% block title %}{% endblock %}</title>
-
-    <link rel="stylesheet" type="text/css" href="{% static 'painindex/style.css' %}" />
-
-    {# At some point, delete font weights I'm not actually using. In particular there are 2 bold weights here, 600 and 700 #}
-    <link rel='stylesheet' type='text/css' href='http://fonts.googleapis.com/css?family=Open+Sans:400italic,400,600,700'>
-
-    <link href='http://fonts.googleapis.com/css?family=Gafata' rel='stylesheet' type='text/css'>
     
     <script type='text/javascript' 
-        src="//ajax.googleapis.com/ajax/libs/jquery/1.11.0/jquery.min.js"></script>
+        src="//ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+
+    <!-- Latest compiled and minified CSS -->
+    <link rel="stylesheet" href="{% static 'painindex/bootstrap-3.2.0-dist/css/bootstrap.min.css'%}">
+
+    <!-- Optional theme -->
+    <link rel="stylesheet" href="{% static 'painindex/bootstrap-3.2.0-dist/css/starter-template.css'%}">
+
+    <!-- Latest compiled and minified JavaScript -->
+    <script src="{% static 'painindex/bootstrap-3.2.0-dist/js/bootstrap.min.js'%}"></script>
+
+    <!-- Add custom css below -->
+    {# <link rel="stylesheet" type="text/css" href="{% static 'painindex/css/style.css' %}" /> #}
+    <link rel="stylesheet" type="text/css" href="{% static 'painindex/css/site.css' %}" />
         
+    <!-- Titillium Web -->
+    <link href='http://fonts.googleapis.com/css?family=Titillium+Web:400,400italic,700' rel='stylesheet' type='text/css'>
+    {# Other Google Web Fonts we've tried: Lato, Exo 2, Nobile #}
 
     {% block headstuff %}{% endblock %}
     
@@ -27,30 +39,59 @@
 {% block body %}
 
     {% block nav %}
-    <nav>
-    </nav>
-    {% endblock %}
-    
-    {% block body_other %}
-    
-        <div id="top_matter">
-        </div>
-        
-        <div id="main_content_box">
-
-            <div id="main_content">
-                <h1>
-                    {% block main_content_title %}{% endblock %}        
-                </h1>
-                {% block main_content %}{% endblock %}
+        <div class="navbar navbar-inverse navbar-fixed-top" role="navigation">
+          <div class="container">
+            <div class="navbar-header">
+              <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
+                <span class="sr-only">Toggle navigation</span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+              </button>
+              <a class="navbar-brand" href="/">The Pain Index</a>
             </div>
+            <div class="collapse navbar-collapse">
+              <ul class="nav navbar-nav">
 
+                {# Highlight the current page's nav element #}
+
+                {% url 'painindex_app:homepage' as url %}
+                <li {% if request.path == url %} class="active" {% endif %}><a href="{{ url }}">Home</a></li>
+
+                {% url 'painindex_app:about' as url %}
+                <li {% if request.path == url %} class="active" {% endif %}><a href="{{ url }}">About</a></li>
+
+              </ul>
+              <form class="navbar-form navbar-right" role="search">
+                <div class="form-group">
+                  <input type="text" class="form-control" placeholder="search for a bug">
+                </div>
+                <button type="submit" class="btn btn-default"><span class="glyphicon glyphicon-search"></span></button>
+              </form>
+            </div><!--/.nav-collapse -->
+          </div>
         </div>
-    
+    {% endblock %}
+
+    {% block header %}
+    {% endblock %}
+
+    {% block body_other %}
+        <div class="container">
+
+            <h1>
+                {% block main_content_title %}{% endblock %}        
+            </h1>
+
+            {% block main_content %}{% endblock %}
+
+
+        </div><!-- /.container -->
     {% endblock %}
 
 
 {% endblock %}
 </body>
+
 </html>
 

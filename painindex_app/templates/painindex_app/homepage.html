@@ -4,9 +4,100 @@
 {% block title %}Pain Index{% endblock %}
 
 
-{% block body %}
+{% block main_content_title %}
     
-    <h1>Welcome to a World of Pain</h1>
+  
 
 {% endblock %}
 
+{% block header %}
+  <div class = "full-width">
+    <div class = "row">
+
+        <h1>Welcome</h1>
+        <h2> to the Pain Index </h2>
+
+
+    </div>
+  </div>
+{% endblock %}
+
+{% block main_content %}
+<div class = "row" id = "second_row">
+  <div class = "col-md-4">
+    <h3>Contribute</h3>
+    <div id = "call_to_report">
+      <p>Have you been stung by a yellow jacket, bitten by an evil spider, or had pain inflicted on you by any other venomous creature?  Let us know just how much it hurt!</p>
+      <a href="{% url 'painindex_app:painreport' %}" role = 'button' class="btn btn-danger btn-lg btn-block">submit a pain report</a>
+    </div>
+  </div>
+
+  <div class = "col-md-8">
+
+    <div id = "index_col">
+      <h3>The Index</h3>
+      <div class = "inline" id = "source_col">
+        <div class = "index_block"></div>
+
+        {% for bug in find_bugs %}
+          {% if bug == None %}
+            <div class = "index_block"></div>       
+          {% else %}
+            <div class = "index_block"><a href="{% url 'painindex_app:painsource_detail' bug.pk %}">{{ bug }} ({{ bug.pain_rating}})</a></div>
+          {% endif %}
+        {% endfor%}
+
+        <div class = "index_block"></div>
+      </div>
+
+      <div class = "inline">
+        <div id = "top">10</div>
+          <div id = "index" >
+            <div class = "index_block" id = "block_10"></div>
+            <div class = "index_block" id = "block_9"></div>
+            <div class = "index_block" id = "block_8"></div>
+            <div class = "index_block" id = "block_7"></div>
+            <div class = "index_block" id = "block_6"></div>
+            <div class = "index_block" id = "block_5"></div>
+            <div class = "index_block" id = "block_4"></div>
+            <div class = "index_block" id = "block_3"></div>
+            <div class = "index_block" id = "block_2"></div>
+            <div class = "index_block" id = "block_1"></div>
+          </div>
+        <div id = "bottom"><p>0</p></div>
+      </div>
+
+
+      <div id = "info">
+        <h2>featured bug</h2>
+        <h3>{{highlighted_bug.name.capitalize}}</h3>
+        <h4>Pain rating: {{highlighted_bug.pain_rating}}</h4>
+        <p>{{highlighted_bug.short_description}}</p>
+        <p><a href="{% url 'painindex_app:painsource_detail' highlighted_bug.pk %}">Get more info</a></p>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+
+<hr class="featurette-divider">
+<div class = "row featurette">
+  <div class = "col-md-4">
+    <h4>Did you know?</h4>
+    <p>Coming Soon!</p>
+    
+  </div>
+  <div class = "col-md-4">
+    <h4>Explore this site</h4>
+    <p>Coming Soon!</p>
+  </div>
+
+  <div class = "col-md-4">
+    <h4>Share your pain with the world</h4>
+    <p>Coming Soon!</p>
+  </div>
+</div>
+
+{% endblock %}
