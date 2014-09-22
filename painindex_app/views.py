@@ -15,9 +15,9 @@ def homepage(request):
     highlighted_bug = bugs[0]
 
 
-    content = {"find_bugs": find_bugs, "highlighted_bug": highlighted_bug}
-    return render(request, 'painindex_app/homepage.html', content)
-    # return HttpResponse("hi")
+    # content = {"find_bugs": find_bugs, "highlighted_bug": highlighted_bug}
+    # return render(request, 'painindex_app/homepage.html', content)
+    return HttpResponse("hi")
 
 def painsource_detail(request, painsource_id):
     painsource = get_object_or_404(PainSource, pk=painsource_id)
