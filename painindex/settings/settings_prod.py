@@ -51,7 +51,7 @@ ALLOWED_HOSTS = [
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
 # Heroku instructions say to allow all hosts. Sounds like a bad idea.
-# ALLOWED_HOSTS = ['*']
+ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = 'staticfiles' # Static files are collected here
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Static files are collected here
