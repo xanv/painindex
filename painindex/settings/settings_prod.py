@@ -36,8 +36,8 @@ ADMINS = (
 # Set this to match the domains of the production site.
 ALLOWED_HOSTS = [
     'www.thepainindex.com', 'thepainindex.com',
-    'http://still-taiga-5292.herokuapp.com',
-    'still-taiga-5292.herokuapp.com/',
+    'http://still-taiga-5292.herokuapp.com/',
+    'still-taiga-5292.herokuapp.com',
     'localhost'
 ]
 
