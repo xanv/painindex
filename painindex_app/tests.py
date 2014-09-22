@@ -136,6 +136,11 @@ class PainSourceModelTests(TestCase):
 
 class HomepageViewTests(TestCase):
 
+    def test_homepage_view_with_no_data(self):
+        "Ensure the homepage loads even without any data."
+        response = self.client.get(reverse('painindex_app:homepage'))
+        self.assertEqual(response.status_code, 200)        
+
     def test_homepage_view_with_sparse_data(self):
         T, S = make_tags_and_sources(0, 2)
         R0 = PainReport.objects.create(
