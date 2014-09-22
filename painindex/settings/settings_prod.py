@@ -35,6 +35,7 @@ INSTALLED_APPS += (
 ALLOWED_HOSTS = [
     'www.thepainindex.com', 'thepainindex.com',
     'http://still-taiga-5292.herokuapp.com',
+    # 'still-taiga-5292.herokuapp.com/',
     'localhost'
 ]
 
