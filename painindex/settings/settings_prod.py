@@ -17,6 +17,8 @@ except ImportError:
     EMAIL_HOST_USER = os.environ['PAIN_INDEX_EMAIL_HOST_USER']
     EMAIL_USE_TLS = True
 
+    # Heroku adds a default database below
+    DATABASES = {}
 
 DEBUG = False
 TEMPLATE_DEBUG = False
