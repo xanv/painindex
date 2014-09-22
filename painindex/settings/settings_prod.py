@@ -47,18 +47,14 @@ ALLOWED_HOSTS = [
 
 # See https://devcenter.heroku.com/articles/getting-started-with-django
 
-# This DATABASES default is just for running foreman locally.
-# I import it in env instead. 
 DATABASES['default'] = dj_database_url.config()
-# DATABASES = {'default': dj_database_url.config(default='postgres://localhost')}
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
 
-# Heroku instructions say to allow all hosts. Sounds like a bad idea.
+# Heroku instructions say to allow all hosts. A bad idea in production.
+# Handy for debugging though.
 # ALLOWED_HOSTS = ['*']
 
 STATIC_ROOT = 'staticfiles' # Static files are collected here
 # STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles') # Static files are collected here
 STATIC_URL = '/static/'
-STATICFILES_DIRS = (
-    os.path.join(BASE_DIR, 'painindex/static'),
-)
+
