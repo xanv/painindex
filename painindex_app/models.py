@@ -55,12 +55,15 @@ class PainSource(models.Model):
         """
         reports = self.painreport_set.all()
         intensities = [r.intensity for r in reports]
-        if len(reports) > 0:
-            avg = float(sum(intensities)) / len(reports)
 
-            self.pain_rating = avg
-            self.save()
-            return avg
+        if len(reports) == 0:
+            return None
+
+        avg = float(sum(intensities)) / len(reports)
+
+        self.pain_rating = avg
+        self.save()
+        return avg
 
     def reviews(self):
         """ Get all the reviews users have submitted for this PainSource"""
@@ -71,7 +74,7 @@ class PainSource(models.Model):
         return reviews
 
     def short_description(self):
-        return self.description[0:1000]
+        return self.description[:1000] if self.description is not None else ''
 
 
 class PainReport(models.Model):

@@ -1,4 +1,7 @@
 from painindex.settings.settings_base import *
+
+# This file is NOT part of our repo. It contains sensitive settings like secret key
+# and db setup.
 from env import *
 
 
