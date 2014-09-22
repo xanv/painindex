@@ -11,6 +11,13 @@ try:
 except ImportError:
     SECRET_KEY = os.environ['PAIN_INDEX_SECRET_KEY']
 
+    EMAIL_HOST = 'smtp.gmail.com'
+    EMAIL_PORT = 587
+    EMAIL_HOST_PASSWORD = os.environ['PAIN_INDEX_EMAIL_HOST_PASSWORD']
+    EMAIL_HOST_USER = os.environ['PAIN_INDEX_EMAIL_HOST_USER']
+    EMAIL_USE_TLS = True
+
+
 DEBUG = False
 TEMPLATE_DEBUG = False
 
