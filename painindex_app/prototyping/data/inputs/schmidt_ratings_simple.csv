@@ -1,0 +1,37 @@
+family,species,name,pain,duration_in_minutes,rescaled
+,,Sweat Bee,1,,1
+,,Mud Dauber Wasp,1,,1
+,,Cicada Killer,1.3,,1.9
+,,Harvester Ant,3,,7
+,,Bullhorn Acacia Ant,1.8,,3.4
+Anthophoridae,Centris pallida,Digger Bee,2,2,4
+Anthophoridae,Diadasia rinconis,Cactus Bee,2,2,4
+Anthophoridae,Xylocopa virginica,Carpenter Bee,2,2,4
+Apidae,Apis cerana,Asiatic Honey Bee,2,10,4
+Apidae,Apis mellifera,Honey Bee,2,10,4
+Apidae,Apis dorsata,Giant Honey Bee,2,10,4
+Apidae,Bombus sonorus,Bumble Bee,2,5,4
+Eumenidae,Monobia quadridens,Mason Wasp,2,0,4
+Formicidae,Paraponera clavata,Bullet Ant,4,300,10
+Formicidae,Myrmecia pyriformis,Bull Ant,3,0,7
+Formicidae,Myrmecia nigriceps,Bulldog Ant,2,5,4
+Formicidae,Dinoponera grandis,Giant Hunting Ant,2,10,4
+Formicidae,Ectatomma tuberculatum,Selva Ant,2,0,4
+Formicidae,Odontomachus haematodus,Trapjaw Ant,2,0,4
+Formicidae,Pachycondyla villosa,Hairy Panther Ant,2,10,4
+Formicidae,Eciton burchelli,Army Ant,2,5,4
+Formicidae,Manica bradleyi,Manica Ant,2,0,4
+Formicidae,Pseudomyrmex mexicanus,Mexican Twig Ant,1,5,1
+Formicidae,Solenopsis xyloni,Fire Ant,1,5,1
+Mutillidae,Dasymutilla klugii,Velvet Ant,3,30,7
+Pomilidae,Pepsis formosa,Tarantula Hawk,4,5,10
+Vespidae,Synoeca septentrionalis,Warrior Wasp,4,60,10
+Vespidae,Polistes annularis,Red Paper Wasp,3,10,7
+Vespidae,Polistes metricus,Metricus Paper Wasp,3,0,7
+Vespidae,Apoica pallens,Sunflower Wasp,2,5,4
+Vespidae,Bachygastra mellifica,Mexican Honey Wasp,2,5,4
+Vespidae,Polistes canadensis,Paper Wasp,2,10,4
+Vespinae,Dolichovespula maculata,Bald-faced Hornet,2,4,4
+Vespinae,Paravespula pensylvanica,Yellowjacket,2,10,4
+Vespinae,Vespa mandarinia,Asian Giant Hornet,2,10,4
+Vespinae,Vespa squamosa,Southern Yellowjacket,2,10,4
