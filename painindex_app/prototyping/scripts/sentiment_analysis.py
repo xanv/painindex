@@ -85,8 +85,21 @@ def main():
     # with open('../data/outputs/search_results_20140928_stung.txt') as json_search_results:
         search_results = json.load(json_search_results)
 
+    # Sensitivity analysis: see what happens if we change the number of examples.
+    # m = 100
+    # search_results = {pain: search_results[pain][:m] for pain in search_results}
+
+    # Get rid of pain sources with few search results.
+    # For seed=46, rmin=5, we do very well indeed, with avg abs diff = 0.36 on
+    # both train and test! If we set rmin too low or too high, it gets worse.
+    # For other seeds, as long as we have a good mix (i.e. not Warrior Wasp,
+    # Bullet Ant, and Tarantula Hawk all in one subset...), we get sub-0.6 results,
+    # often around 0.5.
+    rmin = 5
+    search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
+
     results_train, results_test = split_data(search_results, 
-        split_frac=0.6, seed=4747)
+        split_frac=0.6, seed=46)
 
     results_train_wds = wordified(results_train)
 
@@ -118,10 +131,6 @@ def main():
     # Bullet Ant get 2.5's! (And yes, Tarantula Hawk is in the training set).
     # All of the predicted ratings are between 2 and 3.
 
-
-    print "\n", predicted_pain_train
-    print "\n", predicted_pain_test
-
     diff_train = {pain: predicted_pain_train[pain] - pains[pain] 
         for pain in predicted_pain_train}
     diff_test = {pain: predicted_pain_test[pain] - pains[pain] 
@@ -130,10 +139,32 @@ def main():
     avg_diff_train = sum(abs(t) for t in diff_train.values()) / len(diff_train)
     avg_diff_test = sum(abs(t) for t in diff_test.values()) / len(diff_test)
 
+    print "\n", predicted_pain_train
+    print "\n", predicted_pain_test
+
     # print "\n", diff_train
     # print "\n", diff_test
+
     print "\n", avg_diff_train, avg_diff_test
+
+
     
+def split_data(results, split_frac, seed):
+    """Return results split into two pieces according to split_frac.
+        Pain names are shuffled according to seed.
+    """
+    pain_names = results.keys()
+    random.seed(seed)
+    random.shuffle(pain_names)
+
+    num_pains_train = int( split_frac*len(pain_names) )
+    pains_train = pain_names[:num_pains_train]
+    pains_test = pain_names[num_pains_train:]
+
+    results_train = {pain: results[pain] for pain in pains_train}
+    results_test = {pain: results[pain] for pain in pains_test}
+
+    return results_train, results_test
 
 
 def wordified(search_results):
@@ -156,23 +187,6 @@ def get_words(text):
     # e.g. re.findall(r'\b\w+\b', text)
     return text.lower().split()
 
-def split_data(results, split_frac, seed):
-    """Return results split into two pieces according to split_frac.
-        Pain names are shuffled according to seed.
-    """
-    pain_names = results.keys()
-    random.seed(seed)
-    random.shuffle(pain_names)
-
-    num_pains_train = int( split_frac*len(pain_names) )
-    pains_train = pain_names[:num_pains_train]
-    pains_test = pain_names[num_pains_train:]
-
-    results_train = {pain: results[pain] for pain in pains_train}
-    results_test = {pain: results[pain] for pain in pains_test}
-
-    return results_train, results_test
-
 def find_word_sentiments(results_wordified, pains):
     "Return dict of sentiment scores for all words in all results."
 
@@ -185,9 +199,51 @@ def find_word_sentiments(results_wordified, pains):
             for wd in words:
                 word_sentiments[wd][0] += intensity
                 word_sentiments[wd][1] += 1
+
+    # Inspect word counts:
+    print "INSPECTING WORD SENTIMENTS:"
+    print len(word_sentiments)
+    # Sort by count:
+    # print sorted(word_sentiments.items(), key=lambda x: x[1][1], reverse=True)[:50]
+    # See what happens if we throw out high-frequency words: not useful.
+    # word_sentiments = {wd: word_sentiments[wd] for wd in word_sentiments
+    #     if word_sentiments[wd][1] < 10}
+
+    # More refined approach: keep words that are well-represented AND predictive.
+    # Now this is promising. Even though the avg abs difference is still high,
+    # There is now a much greater range of predicted values, from 1.5 to 3.7.,
+    # whereas before they were mostly squashed between 2 and 3, resembling random
+    # noise. We do well on Tarantula Hawk now.
+    word_sentiments = {wd: word_sentiments[wd] for wd in word_sentiments
+        if word_sentiments[wd][1] > 10
+        and abs(word_sentiments[wd][0]/word_sentiments[wd][1] - 2.5) > 0.3}
+    print len(word_sentiments)
+
+
     # Take average:
     word_sentiments = {wd: word_sentiments[wd][0]/word_sentiments[wd][1]
         for wd in word_sentiments}
+
+    # Sort by avg:
+    # print sorted(word_sentiments.items(), key=lambda x: x[1], reverse=True)[:100]
+
+    # See if certain words are predictive:
+    # BASELINE: 'stung' should be in every text:
+    # print word_sentiments['stung']
+    # print word_sentiments['the']
+    # # These are predictive:
+    # print word_sentiments['pain']
+    # print word_sentiments['painful']
+    # print word_sentiments['hurt']
+
+    # This sacrifices too much. The algorithm predicts between 2.5 and 2.6 for 
+    # everything in the training AND test set. As a baseline, that gives us
+    # an avg abs diff of 0.78, so keep that in mind as a worst case...
+    # predictive_wds = ['pain', 'painful', 'hurt']
+    # word_sentiments = {wd: word_sentiments[wd] for wd in predictive_wds}
+
+
+
     return word_sentiments
 
 def find_pain_sentiments(results_wordified, word_sentiments):
@@ -270,6 +326,8 @@ def sentiment_converter(pains, pain_sentiments, degree):
 
     def vectorized(sent):
         "Turn a sentiment into a feature vector of higher order terms."
+        if sent is None: 
+            return None
         return np.array([sent**p for p in range(0, degree+1)])
 
     X, y = [], []
@@ -277,6 +335,8 @@ def sentiment_converter(pains, pain_sentiments, degree):
     for pain, sent in pain_sentiments.items():
         # Each example has terms 1, x, x**2, ..., x**degree
         x = vectorized(sent)
+        if x is None: 
+            continue
         X.append(x)
         y.append(pains[pain])
 
