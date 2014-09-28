@@ -78,9 +78,11 @@ import random
 
 def main():
     with open('../data/outputs/pains_20140910.txt') as json_pains:
+    # with open('../data/outputs/pains_20140928.txt') as json_pains:
         pains = json.load(json_pains)
 
     with open('../data/outputs/search_results_20140910.txt') as json_search_results:
+    # with open('../data/outputs/search_results_20140928_stung.txt') as json_search_results:
         search_results = json.load(json_search_results)
 
     results_train, results_test = split_data(search_results, 
@@ -117,8 +119,8 @@ def main():
     # All of the predicted ratings are between 2 and 3.
 
 
-    print predicted_pain_train
-    print predicted_pain_test
+    print "\n", predicted_pain_train
+    print "\n", predicted_pain_test
 
     diff_train = {pain: predicted_pain_train[pain] - pains[pain] 
         for pain in predicted_pain_train}
@@ -128,8 +130,8 @@ def main():
     avg_diff_train = sum(abs(t) for t in diff_train.values()) / len(diff_train)
     avg_diff_test = sum(abs(t) for t in diff_test.values()) / len(diff_test)
 
-    print "\n", diff_train
-    print "\n", diff_test
+    # print "\n", diff_train
+    # print "\n", diff_test
     print "\n", avg_diff_train, avg_diff_test
     
 
