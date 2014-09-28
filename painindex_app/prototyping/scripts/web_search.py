@@ -20,7 +20,7 @@ import os
 def main():
     "All configuration (filepaths, debug=True/False) should be done here."
 
-    pains = import_pains('../data/inputs/schmidt_ratings_complete_simplified.csv')
+    pains = import_pains('../data/inputs/schmidt_ratings_simple.csv')
     names = pains.keys()
 
     # Dict with key = pain name, val = list of search result texts
@@ -29,8 +29,8 @@ def main():
 
     with open('../data/outputs/pains.txt', 'w') as outfile1:
         json.dump(pains, outfile1)
-    with open('../data/outputs/search_results.txt', 'w') as outfile3:
-        json.dump(search_results, outfile3)
+    with open('../data/outputs/search_results.txt', 'w') as outfile2:
+        json.dump(search_results, outfile2)
 
 
 def import_pains(filename):
@@ -82,8 +82,7 @@ def get_search_results(pain_names, debug=False):
         # num = number of search results per page. We don't really
         #   have full control over this; google allows num=100 though.
         query = urllib.urlencode({
-            'q': '"%s" "%s"' % (pain, 'stung'),
-            # '"' + pain + '"' + ' "stung"',
+            'q': '"%s" "%s"' % (pain, 'painful'),
             'num': 100
         })
         url = 'https://www.google.com/search?' + query
