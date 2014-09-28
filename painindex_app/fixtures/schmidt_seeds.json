@@ -1,0 +1,617 @@
+[
+  {
+    "model": "painindex_app.painsource",
+    "pk": 1,
+    "fields": {
+      "name": "Sweat Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 2,
+    "fields": {
+      "name": "Mud Dauber Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 3,
+    "fields": {
+      "name": "Cicada Killer",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 4,
+    "fields": {
+      "name": "Harvester Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 5,
+    "fields": {
+      "name": "Bullhorn Acacia Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 6,
+    "fields": {
+      "name": "Digger Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 7,
+    "fields": {
+      "name": "Cactus Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 8,
+    "fields": {
+      "name": "Carpenter Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 9,
+    "fields": {
+      "name": "Asiatic Honey Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 10,
+    "fields": {
+      "name": "Honey Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 11,
+    "fields": {
+      "name": "Giant Honey Bee",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 12,
+    "fields": {
+      "name": "Bumble Bee",
+      "description": "Honey bees (or honeybees) are bees of the genus Apis, primarily distinguished by the production and storage of honey and the construction of perennial, colonial nests from wax. Honey bees are the only extant members of the tribe Apini, all in the genus Apis. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 13,
+    "fields": {
+      "name": "Mason Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 14,
+    "fields": {
+      "name": "Bullet Ant",
+      "description": "The pain caused by this insect's sting is purported to be greater than that of any other hymenopteran, and is ranked as the most painful according to the Schmidt sting pain index, given a 4+ rating, above the tarantula hawk wasp and, according to some victims, equal to being shot, hence the name of the insect. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 15,
+    "fields": {
+      "name": "Bull Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 16,
+    "fields": {
+      "name": "Bulldog Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 17,
+    "fields": {
+      "name": "Giant Hunting Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 18,
+    "fields": {
+      "name": "Selva Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 19,
+    "fields": {
+      "name": "Trapjaw Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 20,
+    "fields": {
+      "name": "Hairy Panther Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 21,
+    "fields": {
+      "name": "Army Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 22,
+    "fields": {
+      "name": "Manica Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 23,
+    "fields": {
+      "name": "Mexican Twig Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 24,
+    "fields": {
+      "name": "Fire Ant",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 25,
+    "fields": {
+      "name": "Velvet Ant",
+      "description": "The exoskeleton of all velvet ants is unusually tough (to the point that some entomologists have reported difficulty piercing them with steel pins when attempting to mount them for display in cabinets). This characteristic allows them to successfully invade the nests of their prey and also helps them retain moisture. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 26,
+    "fields": {
+      "name": "Tarantula Hawk",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 27,
+    "fields": {
+      "name": "Warrior Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 28,
+    "fields": {
+      "name": "Red Paper Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 29,
+    "fields": {
+      "name": "Metricus Paper Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 30,
+    "fields": {
+      "name": "Sunflower Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 31,
+    "fields": {
+      "name": "Mexican Honey Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 32,
+    "fields": {
+      "name": "Paper Wasp",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 33,
+    "fields": {
+      "name": "Bald-faced Hornet",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 34,
+    "fields": {
+      "name": "Yellowjacket",
+      "description": "These species have lance-like stingers with small barbs, and typically sting repeatedly,[1] though occasionally a stinger becomes lodged and pulls free of the wasp's body; the venom, like most bee and wasp venoms, is primarily only dangerous to humans who are allergic or are stung many times. All species have yellow or white on their faces. (Source: Wikipedia)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 35,
+    "fields": {
+      "name": "Asian Giant Hornet",
+      "description": "(description here)"
+    }
+  },
+  {
+    "model": "painindex_app.painsource",
+    "pk": 36,
+    "fields": {
+      "name": "Southern Yellowjacket",
+      "description": "(description here)"
+    }
+  },
+
+
+  {
+    "model": "painindex_app.painreport",
+    "pk": 1,
+    "fields": {
+      "pain_source": 1,
+      "intensity": 1,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 2,
+    "fields": {
+      "pain_source": 2,
+      "intensity": 1,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 3,
+    "fields": {
+      "pain_source": 3,
+      "intensity": 2,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 4,
+    "fields": {
+      "pain_source": 4,
+      "intensity": 7,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 5,
+    "fields": {
+      "pain_source": 5,
+      "intensity": 3,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 6,
+    "fields": {
+      "pain_source": 6,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 7,
+    "fields": {
+      "pain_source": 7,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 8,
+    "fields": {
+      "pain_source": 8,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 9,
+    "fields": {
+      "pain_source": 9,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 10,
+    "fields": {
+      "pain_source": 10,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 11,
+    "fields": {
+      "pain_source": 11,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 12,
+    "fields": {
+      "pain_source": 12,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 13,
+    "fields": {
+      "pain_source": 13,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 14,
+    "fields": {
+      "pain_source": 14,
+      "intensity": 10,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 15,
+    "fields": {
+      "pain_source": 15,
+      "intensity": 7,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 16,
+    "fields": {
+      "pain_source": 16,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 17,
+    "fields": {
+      "pain_source": 17,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 18,
+    "fields": {
+      "pain_source": 18,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 19,
+    "fields": {
+      "pain_source": 19,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 20,
+    "fields": {
+      "pain_source": 20,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 21,
+    "fields": {
+      "pain_source": 21,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 22,
+    "fields": {
+      "pain_source": 22,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 23,
+    "fields": {
+      "pain_source": 23,
+      "intensity": 1,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 24,
+    "fields": {
+      "pain_source": 24,
+      "intensity": 1,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 25,
+    "fields": {
+      "pain_source": 25,
+      "intensity": 7,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 26,
+    "fields": {
+      "pain_source": 26,
+      "intensity": 10,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 27,
+    "fields": {
+      "pain_source": 27,
+      "intensity": 10,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 28,
+    "fields": {
+      "pain_source": 28,
+      "intensity": 7,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 29,
+    "fields": {
+      "pain_source": 29,
+      "intensity": 7,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 30,
+    "fields": {
+      "pain_source": 30,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 31,
+    "fields": {
+      "pain_source": 31,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 32,
+    "fields": {
+      "pain_source": 32,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 33,
+    "fields": {
+      "pain_source": 33,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 34,
+    "fields": {
+      "pain_source": 34,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 35,
+    "fields": {
+      "pain_source": 35,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+  {
+    "model": "painindex_app.painreport",
+    "pk": 36,
+    "fields": {
+      "pain_source": 36,
+      "intensity": 4,
+      "description": ""
+    }
+  },
+
+]
