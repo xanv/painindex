@@ -1,7 +1,25 @@
-"""This is a first pass at gauging pain intensity from google search results.
+"""POST MORTEM: It's difficult to know what the fundamental limitation is
+because the training set is so small in one dimension (number of bugs).
+Performance is a function of the particular split between training/testing data.
+Sometimes, it makes sense that we do poorly; if the training set doesn't reflect
+the full range of pain intensities, we can hardly be expected to do well.
+And sometimes we do fantastically well. Perhaps if we included all the bugs,
+we would have a reasonably trained model.
+But other times, even though there is a good mix in the training set,
+we still do poorly in testing.
+
+Overall, I think this is only moderately successful. The obvious 
+next approach is to use a lasso or ridge regression next.
+I may return to this approach later.
+
+***************************************************************************
+
+This is a first pass at gauging pain intensity from google search results.
 We use a simplistic approach that analyzes the text blurb associated with each
 search result.
 
+
+Approach:
 1) Each result is associated with a pain source and thus a pain intensity.
 2) For each word, average the intensities of every result the word appears in;
     call this the word_sentiment.
@@ -77,12 +95,13 @@ import random
 
 
 def main():
-    with open('../data/outputs/pains_20140910.txt') as json_pains:
-    # with open('../data/outputs/pains_20140928.txt') as json_pains:
+    # with open('../data/outputs/pains_20140910.txt') as json_pains:
+    with open('../data/outputs/pains_20140928.txt') as json_pains:
         pains = json.load(json_pains)
 
-    with open('../data/outputs/search_results_20140910.txt') as json_search_results:
+    # with open('../data/outputs/search_results_20140910.txt') as json_search_results:
     # with open('../data/outputs/search_results_20140928_stung.txt') as json_search_results:
+    with open('../data/outputs/search_results_20140928_painful.txt') as json_search_results:
         search_results = json.load(json_search_results)
 
     # Sensitivity analysis: see what happens if we change the number of examples.
@@ -90,11 +109,15 @@ def main():
     # search_results = {pain: search_results[pain][:m] for pain in search_results}
 
     # Get rid of pain sources with few search results.
-    # For seed=46, rmin=5, we do very well indeed, with avg abs diff = 0.36 on
+    # For seed=46, rmin=5, *_20140910.txt,
+    # we do very well indeed, with avg abs diff = 0.36 on
     # both train and test! If we set rmin too low or too high, it gets worse.
     # For other seeds, as long as we have a good mix (i.e. not Warrior Wasp,
     # Bullet Ant, and Tarantula Hawk all in one subset...), we get sub-0.6 results,
     # often around 0.5.
+    # Q: What is it about the split in seed=46 that causes good results?
+    # Sometimes hte results are bad even when we have a good range of training data.
+
     rmin = 5
     search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
 
@@ -105,6 +128,7 @@ def main():
 
     # Get sentiments for each word and pain in results_train
     word_sentiments = find_word_sentiments(results_train_wds, pains)
+    # print word_sentiments
     pain_sentiments = find_pain_sentiments(results_train_wds, word_sentiments)
 
     # Using word_sentiments and pain_sentiments computed over the training set,
@@ -145,7 +169,27 @@ def main():
     # print "\n", diff_train
     # print "\n", diff_test
 
-    print "\n", avg_diff_train, avg_diff_test
+    print "\nAvg diff train and test:", avg_diff_train, avg_diff_test
+
+    true_pain_train = {p: pains[p] for p in predicted_pain_train}
+    true_pain_test = {p: pains[p] for p in predicted_pain_test}
+
+    # Investigate the characteristics of a "good" training set.
+    # Because we have such sparse training data, it's really important to get
+    # a good mix spanning the full range of values.
+    print ("\nRange of training truths: (%s, %s)" % 
+        (min(true_pain_train.values()), max(true_pain_train.values()))
+    )
+    print ("Range of training predictions: (%s, %s)" % 
+        (min(predicted_pain_train.values()), max(predicted_pain_train.values()))
+    )
+
+    print ("\nRange of test truths: (%s, %s)" % 
+        (min(true_pain_test.values()), max(true_pain_test.values()))
+    )
+    print ("Range of test predictions: (%s, %s)" % 
+        (min(predicted_pain_test.values()), max(predicted_pain_test.values()))
+    )
 
 
     
@@ -214,11 +258,16 @@ def find_word_sentiments(results_wordified, pains):
     # There is now a much greater range of predicted values, from 1.5 to 3.7.,
     # whereas before they were mostly squashed between 2 and 3, resembling random
     # noise. We do well on Tarantula Hawk now.
-    word_sentiments = {wd: word_sentiments[wd] for wd in word_sentiments
-        if word_sentiments[wd][1] > 10
-        and abs(word_sentiments[wd][0]/word_sentiments[wd][1] - 2.5) > 0.3}
+    word_sentiments = {k:v for k, v in word_sentiments.items()
+        if v[1] > 10 and abs(v[0]/v[1] - 2.5) > 0.3}
     print len(word_sentiments)
 
+    # I should also take out all the words that belong to a particular insect.
+    # These make it easier for the model to overfit the training data.
+    pain_words = set([wd.lower() for pain in pains for wd in pain.split(' ')])
+    word_sentiments = {k:v for k, v in word_sentiments.items()
+        if k not in pain_words}
+    print len(word_sentiments)
 
     # Take average:
     word_sentiments = {wd: word_sentiments[wd][0]/word_sentiments[wd][1]
