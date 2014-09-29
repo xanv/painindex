@@ -30,6 +30,35 @@ usually accidental."
 the surrounding text.
 
 
+I have also incorporated the ability to make predictions for arbitrary inputs.
+This lets me evaluate performance loosely, outside the training set.
+This is important because the training set consists of pains within a narrow
+domain, namely sting pain from hymenopterans.
+
+The very first pass does NOT do well on external sources of pain.
+One reason is that the sting pain results use words like 'sting',
+which itself gets a high coeff of 0.89. That's bad, because in the 
+training context it is largely a constant term, but outside this context 
+it is not usually present. So this alone represents a handicap of -0.89
+applied to non-sting pain. 
+
+For instance, we might expect the black widow spider to do relatively well.
+Is it not also a bug? Yet it does not sting -- it bites.
+The alg is giving it an estimated intensity of 0.88, systematically lower
+than ALL predictions in training/test data, presumably because it lacks
+many of the common words that incidentally occur around stinging insects.
+
+One solution is to simply broaden the scope of the training set, which
+is sort of the point of the website. Another solution is to carefully 
+remove these types of words from consideration.
+
+A third option is to re-weight the words, so that words common to many
+bugs across the scale are given little weight. Unimportant words should not
+be allowed to leach magnitude from the constant term.
+We are using a bag-of-words approach here, and should
+look into tf-idf:
+http://en.wikipedia.org/wiki/Tf%E2%80%93idf
+
 """
 
 
