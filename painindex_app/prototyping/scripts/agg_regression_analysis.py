@@ -7,9 +7,27 @@ y = pain intensity of the corresponding bug
 X = vector of word frequencies in the result, for each of the 
     most common words across dataset, normalized by instances of "the"
 
+We are still getting mixed results.
+We have tried variations on how to weight the words; tagging parts of speech
+and keeping only adjectives/adverbs/other stuff of interest; Porter stemming.
 
-TODO: use a NLP library to parse results, identify n-grams. Porter stemmer.
-We are currently only using individual words. 
+Next: perhaps we should think more methodically about what features to include.
+For instance, maybe the words right around "pain" or "painful" are going
+to be the most useful. Think about the actual search results for 
+something like "lionfish" "painful":
+
+"How to treat a lionfish sting and administer first aid treatment in the event 
+of ... For most people the throbbing, intense pain is going to last for a few 
+hours and will ..."
+
+"Although not fatal, the sting of a lionfish is extremely painful. 
+Because these fish are not aggressive toward people, contact and poisoning is 
+usually accidental."
+
+We see words like "intense" and "throbbing." This is much more focused than
+the surrounding text.
+
+
 """
 
 
@@ -41,12 +59,12 @@ def main():
     search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
 
     results_train, results_test = split_data(search_results, 
-        split_frac=0.95, seed=4612345)
+        split_frac=0.6, seed=4612345)
 
     results_train_wds = wordified(results_train)
     results_test_wds = wordified(results_test)
 
-    common_wds = get_common_words(results_train_wds, 10000)
+    common_wds = get_common_words(results_train_wds, 1000)
     print "FEATURE VECTOR LENGTH:", len(common_wds)
 
     # Each search result is represented by a vector x with 
@@ -141,9 +159,16 @@ def wordified(search_results):
         for wd in re.findall(r'\b\w+\b', pain)])
 
     # Split each search result into words.
-    wordified1 =  {pain: 
-        [ get_words(result['text'], excluded=pain_wds) for result in results ]
-        for pain, results in search_results.items()}
+    # wordified1 =  {pain: 
+    #     [ get_words(result['text'], excluded=pain_wds) for result in results ]
+    #     for pain, results in search_results.items()}
+    wordified1 = {}
+    for pain, results in search_results.items():
+        print "Wordifying pain:", pain
+        wordified1[pain] = [ 
+            get_words(result['text'], excluded=pain_wds) for result in results 
+        ]
+
 
     # Combine all search results for a given pain.
     wordified2 = {pain: [wd for result in results for wd in result] 
@@ -157,18 +182,41 @@ def get_words(text, excluded):
     """Return a processed list of words in text, minus excluded words.
     """
     porter = nltk.stem.porter.PorterStemmer()
-
+    
     wds = [wd.lower() for wd in nltk.word_tokenize(text)]
     # This would take only alphanumeric words:
     # wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
-
     stems = [porter.stem(wd) for wd in wds if wd not in excluded]
-
     # Let's see what happens if we include bigrams:
     # bigrams = [(stems[i] + ' ' + stems[i+1]) for i in range(len(stems)-1)]
     # stems.extend(bigrams)
 
     return stems
+
+# USING Part of Speech: This is much slower and doesn't improve performance.
+# def get_words(text, excluded):
+#     """Return a processed list of words in text, minus excluded words.
+#     """
+#     porter = nltk.stem.porter.PorterStemmer()
+    
+#     #Part Of Speech tagger: 
+#     # See http://www.nltk.org/book/ch05.html
+#     # wds = [wd.lower() for wd in nltk.word_tokenize(text)]
+#     wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
+#     wds = [wd for wd in wds if wd not in excluded]
+
+#     # This step is very expensive:
+#     wds_tagged = nltk.pos_tag(wds)
+
+#     # Let's focus on verbs, adjectives, and adverbs
+#     kept_parts = set(['VB', 'VBG', 'VBN', 'JJ', 'RB'])
+#     kept_wds = [item[0] for item in wds_tagged if item[1] in kept_parts]
+#     # For docs on each tag, e.g.: nltk.help.upenn_tagset('RB')
+
+#     stems = [porter.stem(wd) for wd in kept_wds]
+
+#     return stems
+
 
 def get_common_words(results_wordified, num_wds):
     "Return a list of the num_wds most common words across wordified results."
