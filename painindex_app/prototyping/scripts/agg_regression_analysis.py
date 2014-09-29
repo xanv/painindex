@@ -20,7 +20,7 @@ import numpy as np
 from collections import defaultdict
 import random
 from pprint import pprint
-from nltk import stem
+import nltk
 
 
 def main():
@@ -33,7 +33,7 @@ def main():
         search_results = json.load(json_search_results)
 
     # Sensitivity analysis: see what happens if we change the number of examples.
-    # m = 100
+    # m =100
     # search_results = {pain: search_results[pain][:m] for pain in search_results}
 
     # Get rid of pain sources with few search results.
@@ -41,7 +41,7 @@ def main():
     search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
 
     results_train, results_test = split_data(search_results, 
-        split_frac=0.6, seed=461234)
+        split_frac=0.95, seed=4612345)
 
     results_train_wds = wordified(results_train)
     results_test_wds = wordified(results_test)
@@ -82,7 +82,7 @@ def main():
 
     # Run LASSO or RIDGE for a variety of alphas
     # alphas = [0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
-    alphas = [0.3]
+    alphas = [0.1]
 
     for alpha in alphas:
         print "\nalpha = %s:" % alpha
@@ -99,8 +99,11 @@ def main():
         weights = zip(common_wds, model_train.coef_)
         weights = sorted(weights, key=lambda x: x[1], reverse=True)
         print "WEIGHTS:"
-        pprint(weights[:30])
+        pprint(weights[:100])
         pprint(weights[-10:])
+        # print "CHOICE WORDS:"
+        # extrem = common_wds.index('extrem')
+        # print "extrem:", weights[extrem-3:extrem+3]
 
         eval_performance(X_train, y_train, pains_train, model_train)
         eval_performance(X_test, y_test, pains_test, model_train)
@@ -153,9 +156,12 @@ def wordified(search_results):
 def get_words(text, excluded):
     """Return a processed list of words in text, minus excluded words.
     """
-    porter = stem.porter.PorterStemmer()
+    porter = nltk.stem.porter.PorterStemmer()
 
-    wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
+    wds = [wd.lower() for wd in nltk.word_tokenize(text)]
+    # This would take only alphanumeric words:
+    # wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
+
     stems = [porter.stem(wd) for wd in wds if wd not in excluded]
 
     # Let's see what happens if we include bigrams:
