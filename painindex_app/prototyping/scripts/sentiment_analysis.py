@@ -95,13 +95,13 @@ import random
 
 
 def main():
-    # with open('../data/outputs/pains_20140910.txt') as json_pains:
-    with open('../data/outputs/pains_20140928.txt') as json_pains:
+    with open('../data/outputs/pains_20140910.txt') as json_pains:
+    # with open('../data/outputs/pains_20140928.txt') as json_pains:
         pains = json.load(json_pains)
 
-    # with open('../data/outputs/search_results_20140910.txt') as json_search_results:
+    with open('../data/outputs/search_results_20140910.txt') as json_search_results:
     # with open('../data/outputs/search_results_20140928_stung.txt') as json_search_results:
-    with open('../data/outputs/search_results_20140928_painful.txt') as json_search_results:
+    # with open('../data/outputs/search_results_20140928_painful.txt') as json_search_results:
         search_results = json.load(json_search_results)
 
     # Sensitivity analysis: see what happens if we change the number of examples.
@@ -128,7 +128,6 @@ def main():
 
     # Get sentiments for each word and pain in results_train
     word_sentiments = find_word_sentiments(results_train_wds, pains)
-    # print word_sentiments
     pain_sentiments = find_pain_sentiments(results_train_wds, word_sentiments)
 
     # Using word_sentiments and pain_sentiments computed over the training set,
@@ -191,6 +190,16 @@ def main():
         (min(predicted_pain_test.values()), max(predicted_pain_test.values()))
     )
 
+    # Word sentiments are the determinants of these predictions. Inspect.
+    # Somehow 'tarantula' is getting a high score even when tarantula hawk
+    # isn't in the training set. It must be mentioned along with other
+    # high-scoring members of the Schmidt index. This is spurious.
+    # Removing such words from the word_sentiments will fix htis.
+    # I have now done so below in find_word_sentiments and tarantula hawk
+    # now is only estimated as a 3.16 in the seed=46 case.
+    word_sentiments_items = sorted(word_sentiments.items(), key=lambda x: x[1], 
+        reverse=True)
+    print word_sentiments_items
 
     
 def split_data(results, split_frac, seed):
