@@ -41,7 +41,7 @@ def main():
     search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
 
     results_train, results_test = split_data(search_results, 
-        split_frac=0.95, seed=46)
+        split_frac=0.6, seed=461234)
 
     results_train_wds = wordified(results_train)
     results_test_wds = wordified(results_test)
@@ -80,83 +80,34 @@ def main():
         print "Avg squared diff:", avg_sq_diff
 
 
-    # Fit the Ridge Regression on the training data.
-    # ridge_reg = linear_model.Ridge(alpha=1)
-    # model_train_ridge = ridge_reg.fit(X_train, y_train)
-    # print model_train_ridge.coef_    
-    # fitted_train = model_train_ridge.predict(X_train)
-    # print fitted_train[:40]
-    # Really not sure what score does...doesn't seem to work as I thought.
-    # print model_train_ridge.score(X_train, y_train)
-    # print model_train_ridge.score(X_test, y_test)
-    # y_pred_train_ridge = model_train_ridge.predict(X_train) 
-    # y_pred_test_ridge = model_train_ridge.predict(X_test)
-
-    # print "RIDGE:"
-    # print ("r^2 on train data : %f" % 
-    #     (1 - np.linalg.norm(y_train - y_pred_train_ridge) ** 2
-    #         / np.linalg.norm(y_train) ** 2)
-    # )
-    # print ("r^2 on test data : %f" % 
-    #     (1 - np.linalg.norm(y_test - y_pred_test_ridge) ** 2
-    #         / np.linalg.norm(y_test) ** 2)
-    # )
-
-
-    # Try Lasso Regression:
-    print "LASSO:"
-    # For seed=46:
-    # alpha = 0.01 seems to be the winner. avg sq diff = 0.56
-    # For seed=462, it's completely different: anything above alpha = .3 gives
-    # the same avg_sq_diff = 0.26. Suspicious...yes, in that case we are flatlining
-    # and it just happens to do better
+    # Run LASSO or RIDGE for a variety of alphas
     # alphas = [0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
-    alphas = [0.1]
+    alphas = [0.3]
 
     for alpha in alphas:
         print "\nalpha = %s:" % alpha
-        lasso_reg = linear_model.Ridge(alpha=alpha)
-        # lasso_reg = linear_model.Lasso(alpha=alpha)
-        model_train_lasso = lasso_reg.fit(X_train, y_train)
-        y_pred_train_lasso = model_train_lasso.predict(X_train) 
-        y_pred_test_lasso = model_train_lasso.predict(X_test)
+
+        # SELECT LASSO OR RIDGE
+        reg = linear_model.Ridge(alpha=alpha)
+        # reg = linear_model.Lasso(alpha=alpha)
+
+        model_train = reg.fit(X_train, y_train)
+        y_pred_train = model_train.predict(X_train) 
+        y_pred_test = model_train.predict(X_test)
 
         # See the weights on the feature vector words:
-        weights = zip(common_wds, model_train_lasso.coef_)
+        weights = zip(common_wds, model_train.coef_)
         weights = sorted(weights, key=lambda x: x[1], reverse=True)
         print "WEIGHTS:"
-        pprint(weights[:100])
+        pprint(weights[:30])
         pprint(weights[-10:])
 
-        eval_performance(X_train, y_train, pains_train, model_train_lasso)
-        eval_performance(X_test, y_test, pains_test, model_train_lasso)
-
-
-    # print "\nAggregated performance for RIDGE REG:"
-    # eval_performance(X_train, y_train, pains_train, model_train_ridge)
-    # eval_performance(X_test, y_test, pains_test, model_train_ridge)
-    
-    # print "\nAggregated performance for LASSO REG:"
-    # eval_performance(X_train, y_train, pains_train, model_train_lasso)
-    # eval_performance(X_test, y_test, pains_test, model_train_lasso)
-
-    # Diagnosis: It looks like the ridge and lasso are BOTH flatlining on
-    # the test set. 
-    # When I set alpha=0 for lasso, i.e. regular OLS, lasso shows clear signs
-    # of fitting the training data but it's random noise on the test set.
-    # Even on the training data, it does appear muted toward the average.
-    # Think about this...how does this compare to the mutedness of the
-    # sentiment analysis exercise?
-
-    # I think performance will be much better with a less noisy feature:
-    # aggregated text for each insect.
-    # Right now, individual features are so noisy that
-    # the solver will be highly penalized every time an individual
-    # result is way too high or way too low, so the safe thing is to 
-    # give roughly the same weight to every word.
+        eval_performance(X_train, y_train, pains_train, model_train)
+        eval_performance(X_test, y_test, pains_test, model_train)
 
 
 
+##########################################################################
 
 
     
@@ -184,7 +135,7 @@ def wordified(search_results):
     # We strip out each word of each pain name, so the training process
     # cannot rely on essentially knowing the name of the bug.
     pain_wds = set([wd.lower() for pain in search_results 
-        for wd in pain.split(' ')])
+        for wd in re.findall(r'\b\w+\b', pain)])
 
     # Split each search result into words.
     wordified1 =  {pain: 
@@ -202,12 +153,16 @@ def wordified(search_results):
 def get_words(text, excluded):
     """Return a processed list of words in text, minus excluded words.
     """
-    # TODO: Use nltk to do this properly.
-    # Or at least regex
-    # e.g. re.findall(r'\b\w+\b', text)
     porter = stem.porter.PorterStemmer()
 
-    return [porter.stem(wd) for wd in text.lower().split() if wd not in excluded]
+    wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
+    stems = [porter.stem(wd) for wd in wds if wd not in excluded]
+
+    # Let's see what happens if we include bigrams:
+    # bigrams = [(stems[i] + ' ' + stems[i+1]) for i in range(len(stems)-1)]
+    # stems.extend(bigrams)
+
+    return stems
 
 def get_common_words(results_wordified, num_wds):
     "Return a list of the num_wds most common words across wordified results."
