@@ -44,13 +44,15 @@ import nltk
 
 
 def main():
-    # with open('../data/outputs/pains_20140910.txt') as json_pains:
     with open('../data/outputs/pains_20140928.txt') as json_pains:
         pains = json.load(json_pains)
-
-    # with open('../data/outputs/search_results_20140910.txt') as json_search_results:
     with open('../data/outputs/search_results_20140928_painful.txt') as json_search_results:
         search_results = json.load(json_search_results)
+
+    # We also do some plausibility checks on completely unrated pains.
+    with open('../data/outputs/search_results_unrated_20140928.txt') as json_search_results_unrated:
+        search_results_unrated = json.load(json_search_results_unrated)
+
 
     # Sensitivity analysis: see what happens if we change the number of examples.
     # m =100
@@ -66,6 +68,7 @@ def main():
     PAIN_RADIUS = 3
     results_train_wds = wordified(results_train, pain_radius=PAIN_RADIUS)
     results_test_wds = wordified(results_test, pain_radius=PAIN_RADIUS)
+    results_unrated_wds = wordified(search_results_unrated, pain_radius=PAIN_RADIUS)
 
     common_wds = get_common_words(results_train_wds, 1000)
     print "FEATURE VECTOR LENGTH:", len(common_wds)
@@ -74,10 +77,12 @@ def main():
     #   x[i] = num times the ith word of common_wds appears in the result.
     results_train_features = make_features(results_train_wds, common_wds)
     results_test_features = make_features(results_test_wds, common_wds)
+    results_unrated_features = make_features(results_unrated_wds, common_wds)
 
     # Create the dataset: We treat each result as a standalone feature.
     X_train, y_train, pains_train = make_data(results_train_features, pains)
     X_test, y_test, pains_test = make_data(results_test_features, pains)
+    X_unrated, pains_unrated = make_data(results_unrated_features)
 
     # Ad hoc evaluation of model performance: avg squared difference between
     # predicted and true pain intensities.
@@ -123,8 +128,16 @@ def main():
         pprint(weights[:100])
         pprint(weights[-10:])
 
+        print "Training performance:"
         eval_performance(X_train, y_train, pains_train, model_train)
+        print "\nTest performance:"
         eval_performance(X_test, y_test, pains_test, model_train)
+
+        # Check out predictions for the unrated data too:
+        y_pred_unrated = model_train.predict(X_unrated)
+        predictions = zip(pains_unrated, y_pred_unrated)
+        print "\nUnrated predictions:"
+        pprint(predictions)
 
 
 
@@ -266,12 +279,20 @@ def make_feature(results, common_wds):
 
     return [counts[wd] / float(num_results) for wd in common_wds]
 
-def make_data(results_train_features, pains):
+def make_data(results_train_features, pains=None):
     """Create a dataset of X, y.
     Each row of X is the feature for a single pain with corresponding intensity y.
     In addition to X and y, we return a vector painsources which
     records the pain name for each example.
     """
+
+    # This happens if we just have X data, as in the case with unrated
+    # data. This is just a quick way of making fresh predictions.
+    if pains is None:
+        X = results_train_features.values()
+        painsources = results_train_features.keys()
+        return X, painsources
+
     X, y, painsources = [], [], []
     for pain, feature in results_train_features.items():
         y.append(pains[pain])
