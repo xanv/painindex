@@ -48,6 +48,13 @@ The alg is giving it an estimated intensity of 0.88, systematically lower
 than ALL predictions in training/test data, presumably because it lacks
 many of the common words that incidentally occur around stinging insects.
 
+When I read about the black widow bite, I can certainly tell that it's 
+very painful, so in principle this is a fixable problem.
+Upon closer inspection, we may also be having issues due to the fact that
+the qualitative *type* of pain is different. Latrodectism is characterized
+by muscle cramps etc, which don't show up much in the hymenopteran data.
+
+
 One solution is to simply broaden the scope of the training set, which
 is sort of the point of the website. Another solution is to carefully 
 remove these types of words from consideration.
