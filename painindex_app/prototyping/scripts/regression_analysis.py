@@ -1,6 +1,6 @@
 """This is a second pass at gauging pain intensity from google search results.
 
-We use a regression.
+We try ridge and lasso regressions.
 Each search result is expressed as a feature vector of the
 words it does and does not contain.
 
@@ -148,7 +148,12 @@ def main():
     # Think about this...how does this compare to the mutedness of the
     # sentiment analysis exercise?
 
-
+    # I think performance will be much better with a less noisy feature:
+    # aggregated text for each insect.
+    # Right now, individual features are so noisy that
+    # the solver will be highly penalized every time an individual
+    # result is way too high or way too low, so the safe thing is to 
+    # give roughly the same weight to every word.
 
 
 
@@ -179,19 +184,22 @@ def wordified(search_results):
         In other words, return a dict with key=pain name, val=list of results 
         where each result is now a list of the words the result contains.
     """
-    # We strip out the name of the pain from each text, so the training process
+    # We strip out each word of each pain name, so the training process
     # cannot rely on essentially knowing the name of the bug.
-    # (This is not a huge deal for the current approach that takes the equal-weighted
-    # average over each word)
-    return {pain: [get_words(result['text'].replace(pain, '')) for result in search_results[pain]]
-        for pain in search_results}
+    pain_wds = set([wd.lower() for pain in search_results 
+        for wd in pain.split(' ')])
+    return {pain: [ get_words(result['text'], excluded=pain_wds) for result in results ]
+        for pain, results in search_results.items()}
 
-def get_words(text):
-    "Return a processed list of words in text."
+
+def get_words(text, excluded):
+    """Return a processed list of words in text, minus excluded words.
+    """
     # TODO: Use nltk to do this properly.
     # Or at least regex
     # e.g. re.findall(r'\b\w+\b', text)
-    return text.lower().split()
+
+    return [wd for wd in text.lower().split() if wd not in excluded]
 
 def get_common_words(results_wordified, num_wds):
     "Return a list of the num_wds most common words across wordified results."
