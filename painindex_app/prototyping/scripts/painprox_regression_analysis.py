@@ -66,6 +66,16 @@ We are using a bag-of-words approach here, and should
 look into tf-idf:
 http://en.wikipedia.org/wiki/Tf%E2%80%93idf
 
+Other comments:
+* I think it's pretty clear that Ridge is the right choice here. There are 
+quite a few words with predictive power, not just a few crucial ones.
+I tried lasso just to see, and it really didn't do well.
+
+Things to try:
+* Use tf-idf
+* See what's going on with the intercept
+* Try using higher order features and/or bigrams.
+
 """
 
 
@@ -144,7 +154,8 @@ def main():
 
     # Run LASSO or RIDGE for a variety of alphas
     # alphas = [0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
-    alphas = [0.1]
+    alpha = [0.1]
+    # alphas = [0.0001]
 
     for alpha in alphas:
         print "\nalpha = %s:" % alpha
