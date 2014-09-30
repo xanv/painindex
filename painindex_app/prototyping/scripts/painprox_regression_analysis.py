@@ -154,7 +154,7 @@ def main():
 
     # Run LASSO or RIDGE for a variety of alphas
     # alphas = [0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
-    alpha = [0.1]
+    alphas = [0.1]
     # alphas = [0.0001]
 
     for alpha in alphas:
@@ -271,31 +271,6 @@ def get_words(text, excluded, pain_radius=None):
     return list(set(pain_neighbors))
 
 
-# USING Part of Speech: This is much slower and doesn't improve performance.
-# def get_words(text, excluded):
-#     """Return a processed list of words in text, minus excluded words.
-#     """
-#     porter = nltk.stem.porter.PorterStemmer()
-    
-#     #Part Of Speech tagger: 
-#     # See http://www.nltk.org/book/ch05.html
-#     # wds = [wd.lower() for wd in nltk.word_tokenize(text)]
-#     wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
-#     wds = [wd for wd in wds if wd not in excluded]
-
-#     # This step is very expensive:
-#     wds_tagged = nltk.pos_tag(wds)
-
-#     # Let's focus on verbs, adjectives, and adverbs
-#     kept_parts = set(['VB', 'VBG', 'VBN', 'JJ', 'RB'])
-#     kept_wds = [item[0] for item in wds_tagged if item[1] in kept_parts]
-#     # For docs on each tag, e.g.: nltk.help.upenn_tagset('RB')
-
-#     stems = [porter.stem(wd) for wd in kept_wds]
-
-#     return stems
-
-
 def get_common_words(results_wordified, num_wds):
     "Return a list of the num_wds most common words across wordified results."
     common_wds = {}
@@ -348,78 +323,6 @@ def make_data(results_train_features, pains=None):
 
     return X, y, painsources
 
-
-
-
-
-
-
-# # This is left over from sentiment_analysis. We will want a corresponding
-# # function though:
-# def make_pain_predictor(pains, word_sentiments, pain_sentiments, degree):
-#     """Return a function that makes pain predictions for any set of results.
-#     Results are in their original dictionary form (with 'text' field).
-#     The function returns a dict of pain name: predicted pain level.
-
-#     This function is trained using word_sentiments and pain_sentiments.
-#     degree is the degree of the polynomial to fit with sentiment_converter.
-#     """
-#     # f will convert pain_sentiment into predicted pain level.
-#     # This is necessary because sentiment itself does not equal predicted pain.
-#     # sentiment_converter runs a regression to determine coefficients
-#     # for the transformation, so it's important that the conversion is only
-#     # run once and then used in every call to pain_predictor below.
-#     f = sentiment_converter(pains, pain_sentiments, degree=degree)
-
-#     def pain_predictor(results):
-#         sentiments = find_pain_sentiments(wordified(results), word_sentiments)
-
-#         # If want to include keys with None predictions:
-#         # predicted_pain = {}
-#         # for pain in sentiments:
-#         #     if sentiments[pain] is None:
-#         #         predicted_pain[pain] = None
-#         #     else:
-#         #         predicted_pain[pain] = f(sentiments[pain])
-        
-#         # If want to omit keys with None predictions:
-#         predicted_pain = {pain: f(sentiments[pain]) for pain in sentiments
-#             if sentiments[pain] is not None}
-#         return predicted_pain
-
-#     return pain_predictor
-
-
-# def sentiment_converter(pains, pain_sentiments, degree):
-#     """Return a function which converts pain sentiment into predicted pain.
-#     The sentiment scores do not directly correspond to the original
-#     pain scale. We regress true pain on sentiments, with higher order terms
-#     up to the degree'th degree of sentiment,
-#     to produce a function that converts sentiment to predicted true pain. 
-#     """
-
-#     def vectorized(sent):
-#         "Turn a sentiment into a feature vector of higher order terms."
-#         if sent is None: 
-#             return None
-#         return np.array([sent**p for p in range(0, degree+1)])
-
-#     X, y = [], []
-
-#     for pain, sent in pain_sentiments.items():
-#         # Each example has terms 1, x, x**2, ..., x**degree
-#         x = vectorized(sent)
-#         if x is None: 
-#             continue
-#         X.append(x)
-#         y.append(pains[pain])
-
-#     # I have included an intercept manually, no need to add one.
-#     LM = linear_model.LinearRegression(fit_intercept=False)
-#     LMfit = LM.fit(X, y)
-
-#     # Return a function that gives the fitted value for a sentiment s.
-#     return lambda s: vectorized(s).dot(LMfit.coef_)
 
 
 if __name__ == '__main__':
