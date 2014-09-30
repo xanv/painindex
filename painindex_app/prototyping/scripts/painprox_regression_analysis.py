@@ -1,13 +1,47 @@
-"""This is a fourth pass at gauging pain intensity from google search results.
+"""This is a fourth pass at gauging pain intensity from google search results,
+and the first one I would say is truly successful. 
 
-We explore a more careful choice of relevant features.
+Here we explore a more careful choice of relevant features.
 As before, we use a regression on search results for each insect.
 But now we focus only on the words near "painful" in search results.
-The nearby words are likely to modify "painful" and thus give a sense
+The nearby words are likely to modify "painful" and thus give a sharper sense
 of *how* painful.
 
-In the first pass,
-we essentially reduce each search result to the nearby text and then
+Previous approaches have suffered from "kitchen sink" feature sets,
+and I could see that the algorithms were putting high weight on garbage
+features. My intuition was being driven by spam classification algs,
+where there may be 10,000+ features. But here, this is not a good approach.
+
+The primary issue, I think, is that we don't have enough data for that approach.
+I used to think that regularization was the panacea to overfitting,
+but think about what's going on here.
+Adding tons of features makes it easy to overfit. We can rein this
+in by regularizing with ridge or lasso. But what does ridge do?
+It squashes everything down towards zero, promoting a spread
+of weight across all the words. This prevents us from cherry-picking 
+the particular features that best fit the training data and giving them
+super-high weight, but it does NOT magically help us to find the features
+that best generalize outside the training data. With so many features and so few
+data points, the algorithm is still bound to identify ungeneralizable words
+as most important because they happen to fit the training data best. 
+The fact that their coeffs get squashed down is at best a dilution, not a
+solution, to the problem.
+Lasso regression has the same problem. It will pick a few words and call them
+most important, but they are unlikely to be the right words.
+
+The solution is to help our algorithm out by reducing noise in the set of words
+before we even get started. 
+This is accomplished by focusing only on the words near "painful".
+
+In addition, we can restrict our feature set to use only the k most common
+words across the data. We can experiment with choice of k, and perhaps 
+do something like ruling out short words. I have tried restricting only to stems
+of at least 4 letters, which works fine but more experimentation is needed.
+
+*
+
+PROCEDURE:
+We essentially reduce each search result to the nearby text and then
 perform the same exercise as in agg_regression_analysis.py.
 
 y = pain intensity of the corresponding bug
@@ -29,6 +63,7 @@ usually accidental."
 ^We see words like "intense" and "throbbing." This is much more focused than
 the surrounding text.
 
+*
 
 I have also incorporated the ability to make predictions for arbitrary inputs.
 This lets me evaluate performance loosely, outside the training set.
@@ -84,7 +119,79 @@ it would matter. But why not just set normalize=True for Ridge?
 I tried that and...well, it completely changed everything. 
 The highest weighted words are no longer "sting" etc, but...they don't exactly
 make sense either. passag, part, stock, account, steve, gun. Right...
-Think about if there is any advantage to reweighting words.
+Think about if there is any advantage to reweighting words. There really
+ought to be. Each word should be on equal footing for regularization purposes.
+
+Next, I tried simply removing highly rated words like 'sting' and 'insect'
+which are obviously specific to insect sting pain. This helped a bit,
+but it's more of a demo than an actual solution. 
+
+In straight OLS, the coeff on sting should reflect its residual predictive power
+over and above the other terms, including the constant. So if this got a positive
+beta in OLS, it would indicate that more mention of "sting" actually 
+coincides with higher pain insects. But if possible, we should deliberately 
+deprive ourselves of this language for times when we are trying to apply
+our model to non-stinging pains. It is still useful within this domain, but
+we should project it out, more generally. So...think about the right projection
+that would do that.
+
+[Does sklearn's ridge regularization include the constant term as another feature? 
+If so, then sting will pick up some of the constant term, 
+which is an objectively terrible idea. The last thing we want is for a bunch
+of words which are common across the domain of sting pain to displace the 
+intercept coeff! Then when we move to a different problem domain, we effectively
+lose the intercept, leveling everything down.
+If ridge does it wrong, that's bad. The solution is NOT to add my own vector
+of 1's, because that will DEFINITELY be regularized.
+Ugh. The internet is being unhelpful on this front.
+It looks like the intercept IS included in regularization.
+http://scikit-learn.org/stable/modules/linear_model.html
+
+]
+
+
+Anyway, I need a more general way to rule out words like sting and insect.
+The obvious approach is to actually expand
+the training set. In the absence of this, though, I could try an exercise
+where I restrict myself to only words used across both problem domains,
+and then use the rated data to train.
+This is using lionfish as training data in a first pass, but only schmidt
+data to actually train.
+
+I expect some version of this will lead to an improvement; however, there
+is clearly no substitute for actual training. Different pain domains can 
+use the same set of words in different ways to indicate pain.
+
+Actually, ultimately I may want to make good use of domain-specific language
+inside any domain, so long as I can identify the domain.
+I'm starting to see where this leads. There is no single optimal translation
+from written language into pain, but written language also contains other
+clues about which translation we should use. I can identify differences
+between writing about insects and fish, which means so can a learning algorithm.
+We will ultimately want to perform
+a clustering exercise to sort pain sources into different groups based
+on the language used to describe them. We will then use the data within
+the group to estimate pain. 
+
+Oh, now this is interesting. Not to get ahead of myself, but this latter problem
+is starting to take on aspects of recommender systems. The clustering approach
+is simplistic and absolute: a pain gets sorted into a particular bucket, and is handled
+like all the other pains in that bucket. But we could take a more nuanced
+view of the world. Each pain is similar to others to various degrees. There is
+an underlying vector of characteristics for each pain. One (set of) 
+characteristics
+is the intensity etc, another set of characteristics is the words used to describe
+this class of pain sources, and a third set of characteristics is the words
+used in this class of pain sources to actually describe the pain intensity.
+We can use the second set to identify a class of pain, and the third set
+to make the translation. But more generally, the second set may tell us not
+just one class but rather how similar to each class. We can build up a
+"personalized" translation table by taking a weighted combination of these
+classes.
+
+That's very vague and possibly rubbish, but something to think about down the
+line.
+
 """
 
 
@@ -120,13 +227,16 @@ def main():
     results_train, results_test = split_data(search_results, 
         split_frac=0.6, seed=46)
 
+    MAX_FEATURES = 1000
+
     PAIN_RADIUS = 3
     results_train_wds = wordified(results_train, pain_radius=PAIN_RADIUS)
     results_test_wds = wordified(results_test, pain_radius=PAIN_RADIUS)
     results_unrated_wds = wordified(search_results_unrated, pain_radius=PAIN_RADIUS)
 
-    common_wds = get_common_words(results_train_wds, 1000)
-    print "FEATURE VECTOR LENGTH:", len(common_wds)
+    common_wds = get_common_words(results_train_wds, MAX_FEATURES)
+    NUM_FEATURES = len(common_wds) # min of len(results_train_wds) and MAX_FEATURES
+    print "FEATURE VECTOR LENGTH:", NUM_FEATURES
 
     # Each search result is represented by a vector x with 
     #   x[i] = num times the ith word of common_wds appears in the result.
@@ -164,7 +274,6 @@ def main():
     # Run LASSO or RIDGE for a variety of alphas
     # alphas = [0.0003, 0.001, 0.003, 0.01, 0.03, 0.1, 0.3, 1, 3, 10]
     alphas = [0.1]
-    # alphas = [0.0001]
 
     for alpha in alphas:
         print "\nalpha = %s:" % alpha
@@ -179,8 +288,10 @@ def main():
         y_pred_test = model_train.predict(X_test)
 
         # See the weights on the feature vector words:
+        assert len(common_wds) == len(model_train.coef_)
         weights = zip(common_wds, model_train.coef_)
         weights = sorted(weights, key=lambda x: x[1], reverse=True)
+        weights = [('<CONSTANT_TERM>', model_train.intercept_)] + weights
         print "WEIGHTS:"
         pprint(weights[:100])
         pprint(weights[-10:])
@@ -230,6 +341,11 @@ def wordified(search_results, pain_radius=None):
     pain_wds = set([wd.lower() for pain in search_results 
         for wd in re.findall(r'\b\w+\b', pain)])
 
+    # In addition, we have manually inspected the outputted word coeffs,
+    # and are removing highly ranked words that are evidently specific
+    # to insect sting pain:
+    pain_wds = pain_wds.union(set(['sting', 'insect']))
+
     # Split each search result into words.
     # wordified1 =  {pain: 
     #     [ get_words(result['text'], excluded=pain_wds) for result in results ]
@@ -262,7 +378,13 @@ def get_words(text, excluded, pain_radius=None):
     wds = [wd.lower() for wd in nltk.word_tokenize(text)]
     # This would take only alphanumeric words:
     # wds = [wd.lower() for wd in re.findall(r'\b\w+\b', text)]
+
     stems = [porter.stem(wd) for wd in wds if wd not in excluded]
+    # excluded is also allowed to contain stems; get rid of any such stems
+    stems = [s for s in stems if s not in excluded]
+    # Experiment: get rid of short stems
+    # stems = [s for s in stems if len(s) > 3]
+
     # Let's see what happens if we include bigrams:
     # bigrams = [(stems[i] + ' ' + stems[i+1]) for i in range(len(stems)-1)]
     # stems.extend(bigrams)
