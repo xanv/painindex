@@ -76,6 +76,15 @@ Things to try:
 * See what's going on with the intercept
 * Try using higher order features and/or bigrams.
 
+Actually, I don't see what tf-idf would accomplish given that we're running
+a regression. Well, it's a way of normalizing features, which wouldn't matter
+for straight OLS, but given that we're regularizing with ridge regression,
+it would matter. But why not just set normalize=True for Ridge?
+
+I tried that and...well, it completely changed everything. 
+The highest weighted words are no longer "sting" etc, but...they don't exactly
+make sense either. passag, part, stock, account, steve, gun. Right...
+Think about if there is any advantage to reweighting words.
 """
 
 
@@ -161,6 +170,7 @@ def main():
         print "\nalpha = %s:" % alpha
 
         # SELECT LASSO OR RIDGE
+        # reg = linear_model.Ridge(alpha=alpha, normalize=True)
         reg = linear_model.Ridge(alpha=alpha)
         # reg = linear_model.Lasso(alpha=alpha)
 
