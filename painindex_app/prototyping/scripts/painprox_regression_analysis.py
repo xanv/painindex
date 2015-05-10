@@ -268,14 +268,15 @@ def main():
     search_results = {k:v  for k, v in search_results.items() if len(v) > rmin}
 
     results_train, results_test = split_data(search_results,
-        split_frac=0.6, seed=46)
+        split_frac=0.6, seed=48)
 
     MAX_FEATURES = 1000
+    MAX_PHRASE_LEN = 3
 
     PAIN_RADIUS = 3
-    results_train_wds = wordified(results_train, pain_radius=PAIN_RADIUS)
-    results_test_wds = wordified(results_test, pain_radius=PAIN_RADIUS)
-    results_unrated_wds = wordified(search_results_unrated, pain_radius=PAIN_RADIUS)
+    results_train_wds = wordified(results_train, PAIN_RADIUS, MAX_PHRASE_LEN)
+    results_test_wds = wordified(results_test, PAIN_RADIUS, MAX_PHRASE_LEN)
+    results_unrated_wds = wordified(search_results_unrated, PAIN_RADIUS, MAX_PHRASE_LEN)
 
     common_wds = get_common_words(results_train_wds, MAX_FEATURES)
     NUM_FEATURES = len(common_wds) # min of len(results_train_wds) and MAX_FEATURES
@@ -393,10 +394,12 @@ def split_data(results, split_frac, seed):
     return results_train, results_test
 
 
-def wordified(search_results, pain_radius=None):
+def wordified(search_results, pain_radius=None, max_phrase_len=1):
     """Return a dict with key=pain, val=list of wordified results for that pain.
         pain_radius restricts us to only words within distance pain_radius
         of 'pain', with no restriction if pain_radius=None.
+        Each "wordified" result actually contains n-grams of length
+        n = 1 to max_phrase_len.
     """
     # We strip out each word of each pain name, so the training process
     # cannot rely on essentially knowing the name of the bug.
@@ -420,17 +423,25 @@ def wordified(search_results, pain_radius=None):
     print "Wordifying pains:"
     for pain, results in search_results.items():
         # print pain
-        wordified[pain] = [
+
+        # lists of 1-grams for each result:
+        words =  [
             get_words(result['text'], excluded=excluded, pain_radius=pain_radius)
             for result in results
         ]
+
+        # 2-grams and so forth are formed by concatenating adjacent 1-grams.
+        all_phrases = []
+        for result in words:
+            phrases = list(result)
+            for n in range(2, max_phrase_len + 1):
+                for i in range(0, len(result) - n):
+                    phrases.append(' '.join(result[i:i+n]))
+            all_phrases.append(phrases)
+
+        wordified[pain] = all_phrases
+
     print 'Done wordifying.\n'
-
-
-    # # Combine all search results for a given pain.
-    # wordified2 = {pain: [wd for result in results for wd in result]
-    #     for pain, results in wordified1.items()}
-
     return wordified
 
 
