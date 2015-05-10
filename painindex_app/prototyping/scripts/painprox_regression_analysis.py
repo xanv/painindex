@@ -474,8 +474,10 @@ def get_words(text, excluded, pain_radius=None):
     # any variation here.
     pain_indices = [i for i, wd in enumerate(stems) if wd == 'pain']
 
+    # Note we exclude 'pain' itself.
     pain_neighbors = [wd for i in pain_indices
-        for wd in stems[i - pain_radius: i + pain_radius + 1]]
+        for wd in stems[i - pain_radius: i + pain_radius + 1] if wd != 'pain'
+        ]
     # Keep only one of each word. This deals with overlaps while possibly giving
     # up a smidgeon of power.
     return list(set(pain_neighbors))
