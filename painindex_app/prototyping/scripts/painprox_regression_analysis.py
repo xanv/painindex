@@ -411,8 +411,9 @@ def wordified(search_results, pain_radius=None, max_phrase_len=1):
     # to insect sting pain:
     pain_wds = pain_wds.union(set(['sting', 'insect', 'schmidt', 'index']))
     stopwds = set(stopwords.words('english'))
+    others = set(['.', '...', '-', ','])
 
-    excluded = pain_wds | stopwds
+    excluded = pain_wds | stopwds | others
 
 
     # Split each search result into words.
